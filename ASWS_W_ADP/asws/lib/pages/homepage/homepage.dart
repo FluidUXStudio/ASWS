@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> {
   var item=0;
   @override
   Widget build(BuildContext context) {
+    var width=MediaQuery.of(context).size.width;
     final apst=AppStrings();
     final colo=AppColors();
     return Row(
@@ -58,6 +59,7 @@ class _HomePageState extends State<HomePage> {
                     canvasColor: Colors.indigo,
                   ),
                   child :DropdownButton<String>(
+
                   value: dropdownValue,
                   underline: Container(height: 2,color: Colors.transparent,),
 
@@ -108,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Row(children: [
                   PopupMenuButton(
-                    child:  Icon(Icons.notifications_outlined,size: 35,),
+                    child:  Icon(Icons.notifications_outlined,size: width/40,),
     initialValue: "",
     // Callback that sets the selected popup menu item.
     onSelected: ( item) {
@@ -151,14 +153,14 @@ class _HomePageState extends State<HomePage> {
                            mainAxisAlignment: MainAxisAlignment.end,
                            children: [
                              Column(
-                               children:const  [
-                                 Text("Yahiya Ali",style: TextStyle(color: Colors.deepPurple,fontSize: 20),),
+                               children:  [
+                                 Text("Yahiya Ali",style: TextStyle(color: Colors.deepPurple,fontSize: width/80),),
                                  Text("Admin"),
 
                                ],
                              ),
-                             const SizedBox(width: 20,),
-                             CircleAvatar()
+                             const  SizedBox(width: 20,),
+                           const   CircleAvatar()
                            ],
                          ),
                          initialValue: "",
@@ -201,10 +203,11 @@ class _HomePageState extends State<HomePage> {
                           border: Border(bottom: BorderSide(color: Colors.grey))
                       ),
                       child:
-                      const  ListTile(
-                        leading: CircleAvatar(),
-                        title: Text("Shaik Ahmned",style: TextStyle(color: Colors.deepPurple,fontWeight: FontWeight.bold,fontSize: 18),),
-                        subtitle: Text("Mecca Masjid Center"),
+                        ListTile(
+                          contentPadding: EdgeInsets.zero,
+                        leading: const CircleAvatar(),
+                        title: Text("Shaik Ahmned",style: TextStyle(color: Colors.deepPurple,fontWeight: FontWeight.bold,fontSize: width/80),),
+                        subtitle: Text("Mecca Masjid Center",style:TextStyle(fontSize: width/90),),
 
                       ),
                     );
@@ -228,10 +231,11 @@ class _HomePageState extends State<HomePage> {
                                 border: Border(bottom: BorderSide(color: Colors.grey))
                             ),
                             child:
-                            const  ListTile(
-                              leading: CircleAvatar(),
-                              title: Text("jaffer hussain",style: TextStyle(color: Colors.deepPurple,fontWeight: FontWeight.bold,fontSize: 18),),
-                              subtitle: Text("Mecca Masjid Center"),
+                              ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              leading:const  CircleAvatar(),
+                              title: Text("jaffer hussain",style: TextStyle(color: Colors.deepPurple,fontWeight: FontWeight.bold,fontSize:  width/80),),
+                              subtitle: Text("Mecca Masjid Center",style:TextStyle(fontSize: width/90),),
 
                             ),
                           );

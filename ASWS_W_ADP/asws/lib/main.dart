@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         )
       ),
 
-       home:LoginPage()
+       home:DashBoard()
      //  LoginPage(),
       //DashBoard()
     );

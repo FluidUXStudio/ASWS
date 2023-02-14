@@ -67,8 +67,10 @@ class _DashBoardState extends State<DashBoard> {
 
 
     var width=MediaQuery.of(context).size.width;
+    print(width/110,);
 
     return Scaffold(
+
       // small screen
       body: Row(
         children: [
@@ -86,16 +88,16 @@ class _DashBoardState extends State<DashBoard> {
                         children: [
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 20),
-                            height: 60,
-                            width: 60,
+                            height: 35,
+                            width: 35,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(10),
                               color: Colors.greenAccent.shade400
                             ),
                             alignment: Alignment.center,
-                            child: Text("A",style: TextStyle(fontSize: 45,fontWeight: FontWeight.w800,color: colo.whiteColor)),
+                            child: Text("A",style: TextStyle(fontSize:  width/45,fontWeight: FontWeight.w800,color: colo.whiteColor)),
                           ),
-                          Text("ASWS",style: TextStyle(fontSize: 35,fontWeight: FontWeight.w800,color: colo.whiteColor),),
+                          Text("ASWS",style: TextStyle(fontSize:  width/45,fontWeight: FontWeight.w800,color: colo.whiteColor),),
                         ],
                       ),
                      const  SizedBox(height: 30,),
@@ -112,8 +114,8 @@ class _DashBoardState extends State<DashBoard> {
 
                             },
                             child: Container(
-                              margin:const EdgeInsets.symmetric(vertical: 5),
-                              padding:const EdgeInsets.all(10),
+                              margin: EdgeInsets.symmetric(vertical: width/110,),
+                               padding: EdgeInsets.all(width/250),
                              decoration: BoxDecoration(
                                color:  page==index?colo.whiteColor:Colors.transparent,
                                borderRadius: const  BorderRadius.only(topLeft:Radius.circular(35),bottomLeft:Radius.circular(35) )
@@ -121,8 +123,9 @@ class _DashBoardState extends State<DashBoard> {
                               child:MouseRegion(
                                 cursor: SystemMouseCursors.click,
                                 child: ListTile(
-                                  leading: Icon(siderbaritems[index].icon,color:page==index?Theme.of(context).primaryColor: colo.lightwhite,size: 40,),
-                                  title: Text(siderbaritems[index].title,style: TextStyle(color: page==index?Theme.of(context).primaryColor: colo.lightwhite,fontSize: 20 ),)
+                                  contentPadding: EdgeInsets.zero,
+                                  leading: Icon(siderbaritems[index].icon,color:page==index?Theme.of(context).primaryColor: colo.lightwhite,size: width/45,),
+                                  title: Text(siderbaritems[index].title,style: TextStyle(color: page==index?Theme.of(context).primaryColor: colo.lightwhite,fontSize: width/75, ),)
                                 ),
                               ) ,
                             ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../utils/appColors.dart';
 import '../../utils/appStrings.dart';
+import '../../utils/appbar.dart';
 import 'addcenter.dart';
 import 'centerdetails.dart';
 import 'centerlist.dart';
@@ -28,125 +29,88 @@ class _CentersPageState extends State<CentersPage> {
 
   @override
   Widget build(BuildContext context) {
-    return detailShow?CenterDetails(seeDetails):dropdownValue=="Add Center"?AddCenter(back):dropdownValue=="Import Center"?ImportCenter(back): SingleChildScrollView(
+    var width=MediaQuery.of(context).size.width;
+    return   detailShow?CenterDetails(seeDetails):dropdownValue=="Add Center"?AddCenter(back):dropdownValue=="Import Center"?ImportCenter(back): Scaffold(
+    appBar:appbarwidget(title:AppStrings().center,context: context),
+
+
+   body:  SingleChildScrollView(
       child: Padding(
         padding:const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Expanded(child: Text(AppStrings().center,style: Theme.of(context).textTheme.headline1,)),
-                IconButton(
-                    onPressed: (){},
-                    icon: const  Icon(Icons.notifications_outlined,size: 35,)),
-                const SizedBox(width: 30,),
-                IconButton(
-                    onPressed: (){},
-                    icon: const  Icon(Icons.settings_outlined,size: 35,)),
-                const SizedBox(width: 30,),
-                Column(
-                  children:const  [
-                    Text("Yahiya Ali",style: TextStyle(color: Colors.deepPurple,fontSize: 20),),
-                    Text("Admin"),
 
-                  ],
-                ),
-                const SizedBox(width: 20,),
-                Container(
-                  height: 70,
-                  width: 70,
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.lightBlueAccent
-                  ),
-                )
-
-
-
-
-              ],
-            ),
             const  SizedBox(
               height: 30,
             ),
             Row(
               children: [
+                Container(
+
+                  width: 300,
+                  height: 50,
+                  padding:const EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: AppColors().whiteColor,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Row(
+                    children: [
+                      Padding(padding:const  EdgeInsets.only(right: 20),child:    Icon(Icons.search,color: Theme.of(context).primaryColor,),),
+                      Expanded(
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                              hintText: AppStrings().search,
+
+                              border: InputBorder.none
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                ),
 
 
                 Expanded(
-                  flex: 2,
-                  child: Container(
 
-                    width: 200,
-                    height: 50,
-                    padding:const EdgeInsets.symmetric(horizontal: 20),
-                    decoration: BoxDecoration(
-                      color: AppColors().whiteColor,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Row(
-                      children: [
-                        Padding(padding:const  EdgeInsets.only(right: 20),child:    Icon(Icons.search,color: Theme.of(context).primaryColor,),),
-                        Expanded(
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                                hintText: AppStrings().search,
-
-                                border: InputBorder.none
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  child: Container(),
+                ),
+                Container(
+                  padding:const  EdgeInsets.symmetric(horizontal: 30),
+                  decoration: BoxDecoration(
+                    color: Colors.indigo,
+                    borderRadius: BorderRadius.circular(30),
 
                   ),
+                  child: Theme(
+                    data: Theme.of(context).copyWith(
+                      canvasColor: Colors.indigo,
+                    ),
+                    child :DropdownButton<String>(
+                      value: dropdownValue,
+                      underline: Container(height: 2,color: Colors.transparent,),
+
+                      elevation: 16,
+                      style: const TextStyle(color: Colors.white),
+
+                      onChanged: (String? value) {
+                        // This is called when the user selects an item.
+                        setState(() {
+                          dropdownValue = value!;
+                        });
+                      },
+                      items: list.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ),
                 ),
-                Expanded(
-                    flex: 2,
-                    child: Container())
-                ,              Expanded(
-                    flex: 2,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
 
-                        Container(
-                          padding:const  EdgeInsets.symmetric(horizontal: 30),
-                          decoration: BoxDecoration(
-                            color: Colors.indigo,
-                            borderRadius: BorderRadius.circular(30),
-
-                          ),
-                          child: Theme(
-                            data: Theme.of(context).copyWith(
-                              canvasColor: Colors.indigo,
-                            ),
-                            child :DropdownButton<String>(
-                              value: dropdownValue,
-                              underline: Container(height: 2,color: Colors.transparent,),
-
-                              elevation: 16,
-                              style: const TextStyle(color: Colors.white),
-
-                              onChanged: (String? value) {
-                                // This is called when the user selects an item.
-                                setState(() {
-                                  dropdownValue = value!;
-                                });
-                              },
-                              items: list.map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                        ),
-                      ],
-
-                    ))
               ],
             ),
             const  SizedBox(height: 30,),
@@ -164,7 +128,7 @@ class _CentersPageState extends State<CentersPage> {
                       });
 
                     }),
-                    Text("East Zone")
+                   const  Text("East Zone")
                   ],
                 ),
                 Row(
@@ -176,7 +140,7 @@ class _CentersPageState extends State<CentersPage> {
                       });
 
                     }),
-                    Text("West Zone")
+                 const    Text("West Zone")
                   ],
                 ),
                 Row(
@@ -188,7 +152,7 @@ class _CentersPageState extends State<CentersPage> {
                       });
 
                     }),
-                    Text("North Zone")
+                 const    Text("North Zone")
                   ],
                 ),
                 Row(
@@ -200,7 +164,7 @@ class _CentersPageState extends State<CentersPage> {
                       });
 
                     }),
-                    Text("South Zone")
+                  const   Text("South Zone")
                   ],
                 )
 
@@ -214,6 +178,7 @@ class _CentersPageState extends State<CentersPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text("Showing 1-5 from 100 data",style: Theme.of(context).textTheme.headline1?.copyWith(fontSize: 15),),
+                  Expanded(child: Container()),
                   Row(children:const  [
                     Icon(Icons.arrow_left,size: 30,),
                     Padding(
@@ -244,7 +209,7 @@ class _CentersPageState extends State<CentersPage> {
           ],
         ),
       ),
-    );
+   ));
   }
   void back(){
     setState(() {
