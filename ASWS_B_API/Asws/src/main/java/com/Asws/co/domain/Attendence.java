@@ -1,5 +1,8 @@
 package com.Asws.co.domain;
 
+import java.sql.Date;
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,8 +34,10 @@ public class Attendence {
     @Column(name = "name")
     private String name;
 
+    // private String studentId;
+
     @Column(name="date")
-    private String date;
+    private LocalDate date;
 
     @Column(name = "leave")
     private String leave;

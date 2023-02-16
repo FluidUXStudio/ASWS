@@ -47,8 +47,8 @@ public class StudentServiceImpl implements StudentService{
             list2 = list2.stream().filter(sd -> ((String) sd.getId()).equalsIgnoreCase(obj.get("id")))
                 .collect(Collectors.toList());
         }
-        if (obj.containsKey("name")) {
-            list2 = list2.stream().filter(sd -> ((byte[]) sd.getPhoto()).equals(obj.get("name")))
+        if (obj.containsKey("photo")) {
+            list2 = list2.stream().filter(sd -> ((byte[]) sd.getPhoto()).equals(obj.get("photo")))
                 .collect(Collectors.toList());
         }
         if (obj.containsKey("zone")) {

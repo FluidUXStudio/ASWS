@@ -1,11 +1,14 @@
 package com.Asws.co.controller;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,13 +56,13 @@ public class AttendenceController {
 
 
     @GetMapping("/search")
-	public ResponseEntity<StudentAttendenceResponse> search(@RequestParam Map<String, String> obj){
+	public ResponseEntity<StudentAttendenceResponse> search(@RequestParam Map<String, Object> obj){
 		StudentAttendenceResponse sdr = attendenceServiceImpl.searchServiceDetailWithFilter(obj);
 		return ResponseEntity.status(HttpStatus.OK).body(sdr);
 	}
     
     @GetMapping("/performance")
-    public float getPerformance(){
-        return attendenceServiceImpl.getPerformance();
+    public float getPerformance(@RequestParam  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate d1, @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate d2){
+        return attendenceServiceImpl.getDAtes(d1, d2);
     } 
 }

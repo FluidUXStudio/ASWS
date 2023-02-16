@@ -1,11 +1,16 @@
 package com.Asws.co.service.Impl;
 
+import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 
@@ -17,6 +22,7 @@ import com.Asws.co.domain.Notification;
 import com.Asws.co.repository.AttendenceRepository;
 import com.Asws.co.repository.StudentRepository;
 import com.Asws.co.response.StudentAttendenceResponse;
+import com.Asws.co.response.StudentAttnPerformanceResponse;
 import com.Asws.co.service.AttendenceService;
 
 @Service
@@ -42,7 +48,7 @@ public class AttendenceServiceImpl implements AttendenceService{
 
 
 
-    public StudentAttendenceResponse searchServiceDetailWithFilter(Map<String, String> obj ) {
+    public StudentAttendenceResponse searchServiceDetailWithFilter(Map<String, Object> obj ) {
 		
 	    StudentAttendenceResponse resp = StudentAttendenceResponse.builder().build();
 
@@ -54,25 +60,31 @@ public class AttendenceServiceImpl implements AttendenceService{
 			return resp;
 		}
 
+
 		List<Attendence> list2 = list;
+        
         if (obj.containsKey("id")) {
-            list2 = list2.stream().filter(sd -> ((String) sd.getId()).equalsIgnoreCase(obj.get("id")))
+            list2 = list2.stream().filter(sd -> ((String) sd.getId()).equalsIgnoreCase((String) obj.get("id")))
                 .collect(Collectors.toList());
         }
         if (obj.containsKey("name")) {
-            list2 = list2.stream().filter(sd -> ((String) sd.getName()).equalsIgnoreCase(obj.get("name")))
+            list2 = list2.stream().filter(sd -> ((String) sd.getName()).equalsIgnoreCase((String) obj.get("name")))
                 .collect(Collectors.toList());
         }
         if (obj.containsKey("date")) {
-            list2 = list2.stream().filter(sd -> ((String) sd.getDate()).equalsIgnoreCase(obj.get("date")))
+            list2 = list2.stream().filter(sd -> ((String)sd.getDate().toString()).equals(obj.get("date")))
                 .collect(Collectors.toList());
         }
+        // if (obj.containsKey("date")) {
+        //     list2 = list2.stream().filter(sd -> ((Date) sd.getDate()).equals((obj.get("date")))
+        //         .collect(Collectors.toList());
+        // }
         if (obj.containsKey("leave")) {
-            list2 = list2.stream().filter(sd -> ((String) sd.getLeave()).equalsIgnoreCase(obj.get("leave")))
+            list2 = list2.stream().filter(sd -> ((String) sd.getLeave()).equalsIgnoreCase((String) obj.get("leave")))
                 .collect(Collectors.toList());
         }
         if (obj.containsKey("presentAndAbsent")) {
-            list2 = list2.stream().filter(sd -> ((String) sd.getPresentAndAbsent()).equalsIgnoreCase(obj.get("presentAndAbsent")))
+            list2 = list2.stream().filter(sd -> ((String) sd.getPresentAndAbsent()).equalsIgnoreCase((String) obj.get("presentAndAbsent")))
                 .collect(Collectors.toList());
         }
 		
@@ -116,47 +128,52 @@ public class AttendenceServiceImpl implements AttendenceService{
         return performance;
     }
 
-    public static float getPerformances(long totalstd,int totalAbsent){
+    public float getDAtes(LocalDate d1, LocalDate d2){
 
-     float performance =(totalAbsent /totalstd) * 100;
+        List<String> n1 = new ArrayList<>();
+        List<Attendence> per = attendenceRepository.findByDateBetween(d1, d2);
+
+        List<Attendence> l1 = attendenceRepository.findAll();
+        for(Attendence i :l1){
+            n1.add(i.getPresentAndAbsent());
+        }
+
+        // Duration timeElapsed = Duration.between(d1,d2);
+
+        
+
+    List<Attendence> present = l1
+                    .stream()
+                    .filter(sd -> ((String) sd.getPresentAndAbsent()).equalsIgnoreCase("present"))
+                        .collect(Collectors.toList());
+
+                        float   performance =(float) present.size() /6;
+                        // float   performance = 506/6;
         return performance;
     }
+    // } 
 
+        public static float  getNumPErformance(float a , float b){
 
-    public List<Integer> getOverAllPErformance(){
+            float performance = a / b;
 
-        List<Attendence> ls = attendenceRepository.findAll();
-        List<Integer> ars = new ArrayList<>();
-        int present = 0;
-        int Absent = 0;
-
-       
-
-        for(Attendence a :ls){
-        //   ars.add(a.getDate().length(), a);
-            a.getPresentAndAbsent().length();
-
-            if (a.getPresentAndAbsent() == "present") {
-                present = a.getPresentAndAbsent().length();
-                ars.add(present);
-                System.out.println(present);
-
-            //   boolean sd =  a.getPresentAndAbsent().contains("present");
-            //   System.out.println(sd);
-            //   ars.add(sd);
-            }else if(a.getPresentAndAbsent() == "absent"){
-                Absent = a.getPresentAndAbsent().length();
-                System.out.println(Absent);
-                ars.add(Absent);
-            }
+            return performance;
         }
-        return ars;
-    }
 
+
+   
     public static void main(String[] args) {
         float rest = 54 / 7f;
+        LocalDate d = LocalDate.of(2002,11,23);
+        LocalDate d2 =LocalDate.of(2003,11,23);
+         dateRange = LocalDateRange.of( start , stop )
+        Duration timeElapsed = Duration.between(d,d2);
+        long diff = Duration.between(d,d2).toDays();
 
-        System.out.println(rest);
+
+        
+
+        System.out.println(timeElapsed.toDays());
     // float percentage;
     //   float total_marks;
     //   float scored;
