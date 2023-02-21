@@ -4,7 +4,9 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import com.Asws.co.domain.Attendence;
 import com.Asws.co.domain.Notification;
+import com.Asws.co.domain.Student;
 import com.Asws.co.repository.AttendenceRepository;
 import com.Asws.co.repository.StudentRepository;
 import com.Asws.co.response.StudentAttendenceResponse;
@@ -72,7 +75,7 @@ public class AttendenceServiceImpl implements AttendenceService{
                 .collect(Collectors.toList());
         }
         if (obj.containsKey("date")) {
-            list2 = list2.stream().filter(sd -> ((String)sd.getDate().toString()).equals(obj.get("date")))
+            list2 = list2.stream().filter(sd -> ((String)sd.getDateTime().toString()).equals(obj.get("date")))
                 .collect(Collectors.toList());
         }
         // if (obj.containsKey("date")) {
@@ -94,98 +97,34 @@ public class AttendenceServiceImpl implements AttendenceService{
 		return resp;
 	}
 
-    public float getPerformance(){
-        List<String> n1 = new ArrayList<>();
-        List<Attendence> l1 = attendenceRepository.findAll();
-        for(Attendence i :l1){
-            n1.add(i.getPresentAndAbsent());
+    public double Averageperformance(String status ,  LocalDateTime startDate, LocalDateTime endDate) {
+        List<Attendence> attendenceList= attendenceRepository.findByDateTimeBetween(startDate,endDate);
+        List<Long> n1 = new ArrayList<>();
+     
+        double attendancePercentage = 0;
+        for (Attendence student : attendenceList) {
+            long presentCount = attendenceList.stream()
+            .filter(sd -> ((String) sd.getPresentAndAbsent()).equalsIgnoreCase("present")).count();
+            long absentCount = attendenceList.stream()
+            .filter(sd -> ((String) sd.getPresentAndAbsent()).equalsIgnoreCase("absent")).count();
+            long leaveCount = attendenceList.stream()
+            .filter(sd -> ((String) sd.getPresentAndAbsent()).equalsIgnoreCase("leave")).count();
+            long totalCount = presentCount + absentCount + leaveCount;
+       
+            if(status.equals("present")){
+                attendancePercentage =  presentCount / (double) totalCount * 100;
+            }else if(status.equals("absent")){
+                attendancePercentage =  absentCount / (double) totalCount * 100;
+            }else if(status.equals("leave")){
+                attendancePercentage =  leaveCount / (double) totalCount * 100;
+            }
+           
         }
-
-        List<Attendence> absent = l1
-                                .stream()
-                                .filter(sd -> ((String) sd.getPresentAndAbsent()).equalsIgnoreCase("absent"))
-                .collect(Collectors.toList());
-        List<Attendence> present = l1
-                                .stream()
-                                .filter(sd -> ((String) sd.getPresentAndAbsent()).equalsIgnoreCase("present"))
-                .collect(Collectors.toList());
-
-        List<Attendence> leave = l1
-                .stream()
-                .filter(sd -> ((String) sd.getPresentAndAbsent()).equalsIgnoreCase("leave"))
-.collect(Collectors.toList());
-
-        int ab = absent.size();
-        int pb = present.size();
-        int lb = leave.size();
-
-     float   performance =(float) ab/ l1.size();
-
-
-
-        
-        // int present=n1.size();
-        return performance;
+        return attendancePercentage;
     }
-
-    public float getDAtes(LocalDate d1, LocalDate d2){
-
-        List<String> n1 = new ArrayList<>();
-        List<Attendence> per = attendenceRepository.findByDateBetween(d1, d2);
-
-        List<Attendence> l1 = attendenceRepository.findAll();
-        for(Attendence i :l1){
-            n1.add(i.getPresentAndAbsent());
-        }
-
-        // Duration timeElapsed = Duration.between(d1,d2);
-
-        
-
-    List<Attendence> present = l1
-                    .stream()
-                    .filter(sd -> ((String) sd.getPresentAndAbsent()).equalsIgnoreCase("present"))
-                        .collect(Collectors.toList());
-
-                        float   performance =(float) present.size() /6;
-                        // float   performance = 506/6;
-        return performance;
-    }
-    // } 
-
-        public static float  getNumPErformance(float a , float b){
-
-            float performance = a / b;
-
-            return performance;
-        }
-
 
    
-    public static void main(String[] args) {
-        float rest = 54 / 7f;
-        LocalDate d = LocalDate.of(2002,11,23);
-        LocalDate d2 =LocalDate.of(2003,11,23);
-         dateRange = LocalDateRange.of( start , stop )
-        Duration timeElapsed = Duration.between(d,d2);
-        long diff = Duration.between(d,d2).toDays();
-
-
-        
-
-        System.out.println(timeElapsed.toDays());
-    // float percentage;
-    //   float total_marks;
-    //   float scored;
-    //   Scanner sc = new Scanner(System.in);
-    //   System.out.println("Enter your marks ::");
-    //   scored = sc.nextFloat();
-
-    //   System.out.println("Enter total marks ::");
-    //   total_marks = sc.nextFloat();
-
-    //   percentage = (float)((scored / total_marks) * 100);
-   }
+ 
         
     }
 

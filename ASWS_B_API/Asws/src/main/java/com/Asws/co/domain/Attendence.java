@@ -2,6 +2,7 @@ package com.Asws.co.domain;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -34,15 +36,16 @@ public class Attendence {
     @Column(name = "name")
     private String name;
 
-    // private String studentId;
+    private String studentId;
 
+    
     @Column(name="date")
-    private LocalDate date;
+    private LocalDateTime dateTime;
 
     @Column(name = "leave")
     private String leave;
 
-    @Column(name = "presentOrabsent")
+    @Column(name = "presentAndAbsent")
     private String presentAndAbsent;
     
 }
