@@ -70,6 +70,25 @@ class _HomePageState extends State<HomePage> {
                     // This is called when the user selects an item.
                     setState(() {
                       dropdownValue = value!;
+                      if(dropdownValue=="Create"){
+                        context.read<PageProvider>().updatepage(0);
+
+                      }else if(dropdownValue=="Student"){
+                        context.read<PageProvider>().updatepage(2);
+
+                      }else if(dropdownValue=="Teacher"){
+                        context.read<PageProvider>().updatepage(3);
+
+                      }
+                      else if(dropdownValue=="Zone"){
+                        context.read<PageProvider>().updatepage(1);
+
+                      }
+                      else if(dropdownValue=="Volunteer"){
+                        context.read<PageProvider>().updatepage(4);
+
+                      }
+
                     });
                   },
                   items: list.map<DropdownMenuItem<String>>((String value) {

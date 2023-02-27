@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:asws/utils/appColors.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+
+import '../../model/studentmodel.dart';
 class StudentTable extends StatefulWidget {
   VoidCallback ontap;
-  StudentTable(this.ontap);
+  List<StudentModel>data;
+  StudentTable(this.ontap,this.data);
 
   @override
   State<StudentTable> createState() => _StudentTableState();
@@ -13,6 +18,8 @@ class _StudentTableState extends State<StudentTable> {
   bool iselected=false;
   @override
   Widget build(BuildContext context) {
+
+
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Column(
@@ -49,9 +56,9 @@ class _StudentTableState extends State<StudentTable> {
             ),
           ),
           Divider(),
-          ListView.builder(
+         widget.data==[]?Text("NO Data "): ListView.builder(
 
-            itemCount: 10,
+            itemCount:  widget.data.length,
               shrinkWrap: true,
               itemBuilder: (context, index){
             return  Container(
@@ -78,16 +85,18 @@ class _StudentTableState extends State<StudentTable> {
                            }),
                          ),
                         SizedBox(width: 20,),
-                        Container(
-                          height: 35,
-                          width: 35,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            color: Colors.indigo
-                          ),
-                        ),
+                        CircleAvatar(radius: 20,
+                          backgroundImage:MemoryImage(const Base64Decoder().convert(widget.data[index].photo.toString())),),
+                        // Container(
+                        //   height: 35,
+                        //   width: 35,
+                        //   decoration: BoxDecoration(
+                        //     borderRadius: BorderRadius.circular(50),
+                        //     color: Colors.indigo
+                        //   ),
+                        // ),
                        const  SizedBox(width: 10,),
-                        Text("Mohd Ghouse",style: TextStyle(color: AppColors().darkbluegrey,fontSize:15,fontWeight: FontWeight.bold))
+                        Text("${widget.data[index].firstName} ${widget.data[index].lastName}",style: TextStyle(color: AppColors().darkbluegrey,fontSize:15,fontWeight: FontWeight.bold))
 
 
 
@@ -95,16 +104,16 @@ class _StudentTableState extends State<StudentTable> {
                     )),
                     Expanded(
                         flex:1,
-                        child: Text("#12345678",style: TextStyle(color:Theme.of(context).primaryColor,fontWeight: FontWeight.bold),)),
+                        child: Text("${widget.data[index].id}",style: TextStyle(color:Theme.of(context).primaryColor,fontWeight: FontWeight.bold),)),
                    const  Expanded(
                        flex:1,
                        child: Text("March 25 2022",style: TextStyle(color: Colors.grey,),)),
                     Expanded(
                         flex:1,
-                        child: Text("Mohd Ghouse",style: TextStyle(color: AppColors().darkpurple,),)),
+                        child: Text("${widget.data[index].parentFirstName} ${widget.data[index].parentLastName}",style: TextStyle(color: AppColors().darkpurple,),)),
                     Expanded(
                         flex:1,
-                        child: Text("Hyderabad",style: TextStyle(color: AppColors().darkpurple,),)),
+                        child: Text("${widget.data[index].city}",style: TextStyle(color: AppColors().darkpurple,),)),
                     Expanded(
                         flex:1,
                         child:Row(

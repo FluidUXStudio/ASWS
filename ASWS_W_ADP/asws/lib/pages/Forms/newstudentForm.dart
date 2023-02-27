@@ -1,4 +1,11 @@
+
+
+import 'dart:io';
+
 import 'package:asws/utils/appColors.dart';
+import 'package:asws/utils/appbar.dart';
+import 'package:flutter/foundation.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 class NewStudentForm extends StatefulWidget {
   VoidCallback ontap;
@@ -56,29 +63,42 @@ class _NewStudentFormState extends State<NewStudentForm> {
   TextEditingController motherstate=TextEditingController();
   TextEditingController mothercity=TextEditingController();
   TextEditingController motheroccupation=TextEditingController();
+  File? userimage;
+  Uint8List webImage=Uint8List(8);
+  String _currentSelectedzone = "";
+  String _currentSelectedcenter = "";
 
 
-
-
-
-
-
+  List<String> zonelist = [
+    "center",
+    "Hyderabad",
+    "Secunderabad",
+    "Bandlaguda",
+  ];
   bool iselected=false;
   String? gender;
   String? perentalstatus;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _currentSelectedzone="center";
+    _currentSelectedcenter="center";
+
+  }
 
   @override
   Widget build(BuildContext context) {
+    var width=MediaQuery.of(context).size.width;
     return Scaffold(
+      appBar: appbarwidget(title:"Student >  Add New Student" , context: context,ontap:widget.ontap ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GestureDetector(
-                  onTap: widget.ontap,
-                  child: Text("Student >  Add New Student ",style: Theme.of(context).textTheme.headline1,)),
+
              const  SizedBox(height: 30,),
 
              Card(
@@ -98,7 +118,7 @@ class _NewStudentFormState extends State<NewStudentForm> {
                      child:Text("Student Details",style: TextStyle(color: AppColors().whiteColor,fontWeight: FontWeight.bold,fontSize: 20),),
                    ),
                    Container(
-                     height: 760,
+
                      padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 20),
                      child: Row(
                        children: [
@@ -107,22 +127,28 @@ class _NewStudentFormState extends State<NewStudentForm> {
                          child: Padding(
                            padding:const  EdgeInsets.all(20),
                            child: Column(
+                             mainAxisSize: MainAxisSize.min,
                              crossAxisAlignment: CrossAxisAlignment.start,
                              mainAxisAlignment: MainAxisAlignment.start,
                              children: [
                                titletext("Photo *"),
                                const  SizedBox(height: 20,),
-                               Container(
-                                 height: 150,
-                                 width: double.infinity,
-                                 decoration: BoxDecoration(
-                                     border: Border.all(),
-                                     borderRadius: BorderRadius.circular(10)
+                               InkWell(
+                                 onTap: (){
+                                   pickimage(ImageSource.gallery);
+                                 },
+                                 child: Container(
+                                   height: 150,
+                                   width: double.infinity,
+                                   decoration: BoxDecoration(
+                                       border: Border.all(),
+                                       borderRadius: BorderRadius.circular(10)
+                                   ),
+                                   child: userimage==null?Container():Image.memory(webImage,fit: BoxFit.fill,),
                                  ),
                                ),
-                               Container(
 
-                               ),
+
 
                              ],
                            ),
@@ -132,16 +158,56 @@ class _NewStudentFormState extends State<NewStudentForm> {
                              child:Padding(
                                padding: const EdgeInsets.only(right: 15),
                                child: Column(
+                                 crossAxisAlignment: CrossAxisAlignment.start,
                                  children: [
-                                   feild("Admission Number*", addminsionNo,""),
+                                   titletext("Select Zone*"),
+                                   const  SizedBox(height: 20,),
+
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 10),
+
+                                      decoration: BoxDecoration(
+                               border: Border.all(color: Colors.black),
+
+                                      ),
+                                    child:  DropdownButtonHideUnderline(
+                                      child: DropdownButton<String>(
+                                        isExpanded: true,
+                                        value: _currentSelectedzone,
+                                        icon: const Icon(Icons.arrow_downward),
+                                        elevation: 16,
+                                        // style: const TextStyle(color: Colors.deepPurple),
+                                        underline: Container(
+                                          height: 1,
+                                          color: Colors.grey,
+                                        ),
+                                        onChanged: (String? value) {
+                                          // This is called when the user selects an item.
+                                          setState(() {
+                                            _currentSelectedzone = value!;
+                                          });
+                                        },
+                                        items:zonelist
+                                            .map<DropdownMenuItem<String>>((String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ),
+                                  ),
+
                                   const  SizedBox(height: 20,),
                                    feild("First Name *", firtname,"First Name"),
                                    const  SizedBox(height: 20,),
+                                   titletext("Date & Place of Birth *"),
+
                                    Row(
                                      children: [
                                        Expanded(child: Padding(
                                          padding: const EdgeInsets.only(right: 10),
-                                         child: feild("Date & Place of Birth *", dateofbirth,"Date of Birth"),
+                                         child: feild("", dateofbirth,"Date of Birth"),
                                        )),
                                        Expanded(child: Padding(
                                          padding: const EdgeInsets.only(right: 10),
@@ -154,9 +220,9 @@ class _NewStudentFormState extends State<NewStudentForm> {
                                    const  SizedBox(height: 20,),
                                    feild("Address *", address,"Address"),
                                    const  SizedBox(height: 20,),
-                                   feild("Zip Code *", zip,"Postal Code"),
+                                   feild("Pin Code *", zip,"Postal Code"),
                                    const  SizedBox(height: 20,),
-                                   feild("Nearby Center (Optional)", nearbycenter,"Select Center"),
+                                   feild("Adhaar No.", nearbycenter,"9876329823923"),
 
                                  ],
                                ),
@@ -166,9 +232,48 @@ class _NewStudentFormState extends State<NewStudentForm> {
                              child: Padding(
                                padding: const EdgeInsets.only(left: 15),
                                child: Column(
+                                 crossAxisAlignment: CrossAxisAlignment.start,
                                  mainAxisAlignment: MainAxisAlignment.start,
                                  children: [
-                                   feild("Admission Date *", admissiondate,""),
+                                   titletext("Select Center*"),
+                                   const  SizedBox(height: 20,),
+
+                                   Container(
+                                     padding: const EdgeInsets.symmetric(horizontal: 10),
+
+                                     decoration: BoxDecoration(
+                                       border: Border.all(color: Colors.black),
+
+                                     ),
+                                     child:  DropdownButtonHideUnderline(
+                                       child: DropdownButton<String>(
+                                         isExpanded: true,
+                                         value: _currentSelectedcenter,
+                                         icon: const Icon(Icons.arrow_downward),
+                                         elevation: 16,
+                                         // style: const TextStyle(color: Colors.deepPurple),
+                                         underline: Container(
+                                           height: 1,
+                                           color: Colors.grey,
+                                         ),
+                                         onChanged: (String? value) {
+                                           // This is called when the user selects an item.
+                                           setState(() {
+                                             _currentSelectedcenter = value!;
+                                           });
+                                         },
+                                         items:zonelist
+                                             .map<DropdownMenuItem<String>>((String value) {
+                                           return DropdownMenuItem<String>(
+                                             value: value,
+                                             child: Text(value),
+                                           );
+                                         }).toList(),
+                                       ),
+                                     ),
+                                   ),
+                                   const  SizedBox(height: 20,),
+                                   // feild("Admission Date *", admissiondate,""),
                                    const  SizedBox(height: 20,),
                                    feild("Last Name", lastname,"Last Name"),
                                    const  SizedBox(height: 20,),
@@ -176,9 +281,12 @@ class _NewStudentFormState extends State<NewStudentForm> {
                                    const  SizedBox(height: 20,),
                                    feild("Phone  *", phone,"+91 9876543210"),
                                    const  SizedBox(height: 20,),
-                                   feild("State", state,"Select State"),
-                                   const  SizedBox(height: 20,),
                                    feild("City", city,"Selct city"),
+                                   const  SizedBox(height: 20,),
+                                   feild("State", state,"Select State"),
+                                   const  SizedBox(height: 40,),
+
+
 
                                  ],
 
@@ -242,7 +350,7 @@ class _NewStudentFormState extends State<NewStudentForm> {
                          Row(
                            children: [
                              Expanded(
-                               flex: 1,
+
                                child: RadioListTile(
                                  title: Text("Brother"),
                                  value: "Brother",
@@ -256,7 +364,7 @@ class _NewStudentFormState extends State<NewStudentForm> {
                                ),
                              ),
                              Expanded(
-                               flex: 1,
+
                                child: RadioListTile(
                                  title: Text("Sister"),
                                  value: "Sister",
@@ -269,9 +377,9 @@ class _NewStudentFormState extends State<NewStudentForm> {
                                  },
                                ),
                              ),
-                             Expanded(
-                               flex: 5,
-                                 child: Container())
+                             // Expanded(
+                             //   flex: 5,
+                             //     child: Container())
                            ],
                          ),
                           const  SizedBox(height: 20,),
@@ -313,6 +421,7 @@ class _NewStudentFormState extends State<NewStudentForm> {
               Card(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
@@ -327,7 +436,7 @@ class _NewStudentFormState extends State<NewStudentForm> {
                       child:Text("Family Information",style: TextStyle(color: AppColors().whiteColor,fontWeight: FontWeight.bold,fontSize: 20),),
                     ),
                     Container(
-                      height: 1760,
+
                       padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -337,7 +446,7 @@ class _NewStudentFormState extends State<NewStudentForm> {
                           Row(
                             children: [
                               Expanded(
-                                flex: 1,
+
 
                                 child: RadioListTile(
                                   title: Text("Both"),
@@ -352,7 +461,7 @@ class _NewStudentFormState extends State<NewStudentForm> {
                                 ),
                               ),
                               Expanded(
-                                flex: 1,
+                                // flex: 1,
 
                                 child: RadioListTile(
                                   title: Text("Father"),
@@ -367,7 +476,7 @@ class _NewStudentFormState extends State<NewStudentForm> {
                                 ),
                               ),
                               Expanded(
-                                flex: 1,
+                                // flex: 1,
 
                                 child: RadioListTile(
 
@@ -383,7 +492,7 @@ class _NewStudentFormState extends State<NewStudentForm> {
                                 ),
                               ),
                               Expanded(
-                                flex: 1,
+                                // flex: 1,
 
                                 child: RadioListTile(
                                   title: Text("Guardian"),
@@ -397,9 +506,10 @@ class _NewStudentFormState extends State<NewStudentForm> {
                                   },
                                 ),
                               ),
-                              Expanded(
-                                flex: 5,
-                                  child: Container())
+                              // Expanded(
+                              //   flex: 5,
+                              //     child: Container()
+                              // )
 
 
                             ],
@@ -560,16 +670,56 @@ class _NewStudentFormState extends State<NewStudentForm> {
               ),
              const  SizedBox(height: 50,),
               Center(
-                child: Container(
+                child: InkWell(
+                  onTap: (){
+                  //   {
+                  //     "addmissionNumber":68787,
+                  //   "addmissionDate":"2002/7/12",
+                  //   "firstName":"Sajid ",
+                  //   "lastName":"Khan",
+                  //   "dateOfBirth":"2002/3/12",
+                  //   "placeOfBirth":"ueruige3r",
+                  //   "priviousSchool":"masjid e kharwa",
+                  //   "email":"cfudgfs@gmail.com",
+                  //   "phone":2553828738,
+                  //   "address":"euirieg",
+                  //   "state":"Hyderabad",
+                  //   "zipCode":7878,
+                  //   "city":"eirfhieu",
+                  //   "nearByCentre":"erhuehr",
+                  //   "siblings":true,
+                  //   "brOrSis":"brother",
+                  //   "siblingFullName":"nfiegfiei",
+                  //   "sibAge":65,
+                  //   "sibStandard":"fejfhe",
+                  //   "sibSidNumber":6890,
+                  //   "parentalStatus":"father",
+                  //   "parentFirstName":"feugfiegu",
+                  //   "parentLastName":"egfiue",
+                  //   "parentEmail":"euifiueg",
+                  //   "parentPhone":45432453,
+                  //   "parentDateOfBirth":"2002/3/12",
+                  //   "parentPlaceOfBirth":"fueuifh",
+                  //   "mediumOfinstruction":"efiefib",
+                  //   "parentAddress":"egigiegg",
+                  //   "parentState":"euiiue",
+                  //   "parentZipCode":7979,
+                  //   "parentCity":"neifgeigfi",
+                  //   "educationQualification":"jkefbiebf",
+                  //   "occupation":"ejruie"
+                  // }
+                  },
+                  child: Container(
 
-                  padding:const  EdgeInsets.symmetric(horizontal: 20,vertical: 15),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.circular(30),
+                    padding:const  EdgeInsets.symmetric(horizontal: 20,vertical: 15),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(30),
 
+                    ),
+
+                    child:  Text("Submit ",style: TextStyle(color: AppColors().lightwhite,fontWeight: FontWeight.bold),),
                   ),
-
-                  child:  Text("Submit ",style: TextStyle(color: AppColors().lightwhite,fontWeight: FontWeight.bold),),
                 ),
               ),
 
@@ -582,6 +732,26 @@ class _NewStudentFormState extends State<NewStudentForm> {
       ),
     );
   }
+  void pickimage(source) async {
+    if (kIsWeb) {
+      final ImagePicker _picker = ImagePicker();
+      XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        var f = await image.readAsBytes();
+        setState(() {
+          userimage=File(image.path);
+          // _file = File("a");
+          webImage = f;
+        });
+      } else {
+       print("fail");
+      }
+    }
+
+  }
+
+
+
 
 }
 class titletext extends StatelessWidget {

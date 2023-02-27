@@ -1,7 +1,10 @@
 import 'package:asws/pages/Teacher/teacherdetails.dart';
 import 'package:asws/pages/Teacher/teacherlist.dart';
+import 'package:asws/utils/appbar.dart';
 import 'package:flutter/material.dart';
 
+import '../../ApiEndPoints/apiendpoint.dart';
+import '../../Networking/apiService.dart';
 import '../../utils/appColors.dart';
 import '../../utils/appStrings.dart';
 import '../Forms/newstudentForm.dart';
@@ -29,6 +32,13 @@ class _TeachersState extends State<Teachers> {
     // TODO: implement initState
     super.initState();
     dropdownValue = list.first;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      getteacher();
+    });
+  }
+  getteacher()async{
+    var response= await ApiServices().getApiCall(context, ApiEndPoint.getzonenames);
+    print("This is respones ==$response");
   }
 
   @override
@@ -39,68 +49,22 @@ class _TeachersState extends State<Teachers> {
             ? AddTeacher(back)
             : dropdownValue == "Import Teacher"
                 ? ImportTeacher(back)
-                : SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                  child: Text(
-                                AppStrings().teacher,
-                                style: Theme.of(context).textTheme.headline1,
-                              )),
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(
-                                    Icons.notifications_outlined,
-                                    size: 35,
-                                  )),
-                              const SizedBox(
-                                width: 30,
-                              ),
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(
-                                    Icons.settings_outlined,
-                                    size: 35,
-                                  )),
-                              const SizedBox(
-                                width: 30,
-                              ),
-                              Column(
-                                children: const [
-                                  Text(
-                                    "Yahiya Ali",
-                                    style: TextStyle(
-                                        color: Colors.deepPurple, fontSize: 20),
-                                  ),
-                                  Text("Admin"),
-                                ],
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              Container(
-                                height: 70,
-                                width: 70,
-                                decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.lightBlueAccent),
-                              )
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  width: 200,
+                : Scaffold(
+                   appBar: appbarwidget(title:  AppStrings().teacher, context: context),
+                  body: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  width: 400,
                                   height: 50,
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20),
@@ -128,143 +92,147 @@ class _TeachersState extends State<Teachers> {
                                     ],
                                   ),
                                 ),
-                              ),
-                              Expanded(flex: 1, child: Container()),
-                              Expanded(
-                                  flex: 2,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          showdailog(context);
-                                        },
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 30, vertical: 10),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Theme.of(context)
-                                                    .primaryColor),
-                                            borderRadius:
-                                                BorderRadius.circular(30),
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.filter_alt,
-                                                color: Theme.of(context)
-                                                    .primaryColor,
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Text(
-                                                "Filter ",
-                                                style: TextStyle(
-                                                    color: Theme.of(context)
-                                                        .primaryColor),
-                                              ),
-                                            ],
-                                          ),
+                                Expanded(child: Container()),
+                                GestureDetector(
+                                  onTap: () {
+                                    showdailog(context);
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 30, vertical: 10),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Theme.of(context)
+                                              .primaryColor),
+                                      borderRadius:
+                                      BorderRadius.circular(30),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.filter_alt,
+                                          color: Theme.of(context)
+                                              .primaryColor,
                                         ),
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 30),
-                                        decoration: BoxDecoration(
-                                          color: Colors.indigo,
-                                          borderRadius:
-                                              BorderRadius.circular(30),
+                                        const SizedBox(
+                                          width: 10,
                                         ),
-                                        child: Theme(
-                                          data: Theme.of(context).copyWith(
-                                            canvasColor: Colors.indigo,
-                                          ),
-                                          child: DropdownButton<String>(
-                                            value: dropdownValue,
-                                            underline: Container(
-                                              height: 2,
-                                              color: Colors.transparent,
-                                            ),
-                                            elevation: 16,
-                                            style: const TextStyle(
-                                                color: Colors.white),
-                                            onChanged: (String? value) {
-                                              // This is called when the user selects an item.
-                                              setState(() {
-                                                dropdownValue = value!;
-                                              });
-                                            },
-                                            items: list
-                                                .map<DropdownMenuItem<String>>(
-                                                    (String value) {
-                                              return DropdownMenuItem<String>(
-                                                value: value,
-                                                child: Text(value),
-                                              );
-                                            }).toList(),
-                                          ),
+                                        Text(
+                                          "Filter ",
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColor),
                                         ),
-                                      ),
-                                    ],
-                                  ))
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          TeacherList(seeDetails),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Showing 1-5 from 100 data",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline1
-                                      ?.copyWith(fontSize: 15),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                                Row(
-                                  children: const [
-                                    Icon(
-                                      Icons.arrow_left,
-                                      size: 30,
+                              const   SizedBox(width: 30,),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 30),
+                                  decoration: BoxDecoration(
+                                    color: Colors.indigo,
+                                    borderRadius:
+                                    BorderRadius.circular(30),
+                                  ),
+                                  child: Theme(
+                                    data: Theme.of(context).copyWith(
+                                      canvasColor: Colors.indigo,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: CircleAvatar(
-                                        child: Text("1"),
+                                    child: DropdownButton<String>(
+                                      value: dropdownValue,
+                                      underline: Container(
+                                        height: 2,
+                                        color: Colors.transparent,
                                       ),
+                                      elevation: 16,
+                                      style: const TextStyle(
+                                          color: Colors.white),
+                                      onChanged: (String? value) {
+                                        // This is called when the user selects an item.
+                                        setState(() {
+                                          dropdownValue = value!;
+                                        });
+                                      },
+                                      items: list
+                                          .map<DropdownMenuItem<String>>(
+                                              (String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(value),
+                                            );
+                                          }).toList(),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: CircleAvatar(
-                                        child: Text("2"),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: CircleAvatar(
-                                        child: Text("3"),
-                                      ),
-                                    ),
-                                    Icon(
-                                      Icons.arrow_right,
-                                      size: 30,
-                                    ),
-                                  ],
-                                )
+                                  ),
+                                ),
+                                // Expanded( child: Container()),
+                                // Expanded(
+                                //
+                                //     child: Row(
+                                //       mainAxisAlignment:
+                                //           MainAxisAlignment.spaceAround,
+                                //       children: [
+                                //
+                                //
+                                //       ],
+                                //     ))
                               ],
                             ),
-                          ),
-                        ],
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            TeacherList(seeDetails),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Showing 1-5 from 100 data",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline1
+                                        ?.copyWith(fontSize: 15),
+                                  ),
+                                  Row(
+                                    children: const [
+                                      Icon(
+                                        Icons.arrow_left,
+                                        size: 30,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: CircleAvatar(
+                                          child: Text("1"),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: CircleAvatar(
+                                          child: Text("2"),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: CircleAvatar(
+                                          child: Text("3"),
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.arrow_right,
+                                        size: 30,
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  );
+                );
   }
 
   void showdailog(context) {

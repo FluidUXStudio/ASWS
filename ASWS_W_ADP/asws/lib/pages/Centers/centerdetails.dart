@@ -13,7 +13,7 @@ class CenterDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var width=MediaQuery.of(context).size.width;
-    print(width/50);
+
     return Scaffold(
       appBar: appbarwidget(title: "Center > Center Details", context: context,ontap:ontap ),
       body: SingleChildScrollView(
@@ -52,22 +52,22 @@ class CenterDetails extends StatelessWidget {
                             elevation:10,
 
                             child: Container(
-                              padding: const EdgeInsets.all(20),
+                              padding: const EdgeInsets.all(15),
                               height: 120,
                               width: width/8,
                               alignment: Alignment.center,
                               child: Row(
                                 children: [
-                                 const  CircleAvatar(radius: 30,
+                                   CircleAvatar(radius: width/55,
                                   backgroundColor: Colors.blueAccent,
-                                     child: Icon(Icons.person,size: 40,color: Colors.white,),),
-                                 const  SizedBox(width: 20,),
+                                     child: Icon(Icons.person,size: width/50,color: Colors.white,),),
+                                  const  SizedBox(width: 10,),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
+                                    children:  [
                                     Text("Students"),
-                                    SizedBox(height: 10,),
-                                    Text("10",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: Colors.indigo),)
+                                   const  SizedBox(height: 5,),
+                                    Text("10",style: TextStyle(fontSize: width/50,fontWeight: FontWeight.bold,color: Colors.indigo),)
                                   ],)
                                 ],
                               ),
@@ -77,22 +77,22 @@ class CenterDetails extends StatelessWidget {
                             elevation:10,
 
                             child: Container(
-                              padding: const EdgeInsets.all(20),
+                              padding: const EdgeInsets.all(15),
                               height: 120,
                               width: width/8,
                               alignment: Alignment.center,
                               child: Row(
                                 children: [
-                                  const  CircleAvatar(radius: 30,
-                                    backgroundColor: Colors.redAccent,
-                                  child: Icon(Icons.person,size: 40,color: Colors.white,),),
-                                  const  SizedBox(width: 20,),
+                                  CircleAvatar(radius: width/55,
+                                    backgroundColor: Colors.blueAccent,
+                                    child: Icon(Icons.person,size: width/50,color: Colors.white,),),
+                                  const  SizedBox(width: 10,),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children:const  [
+                                    children:  [
                                       Text("Teachers"),
-                                      SizedBox(height: 10,),
-                                      Text("04",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: Colors.indigo),)
+                                      const  SizedBox(height: 5,),
+                                      Text("04",style: TextStyle(fontSize: width/50,fontWeight: FontWeight.bold,color: Colors.indigo),)
                                     ],)
                                 ],
                               ),
@@ -102,27 +102,29 @@ class CenterDetails extends StatelessWidget {
                             elevation:10,
 
                             child: Container(
-                              padding: const EdgeInsets.all(20),
+                              padding: const EdgeInsets.all(15),
                               height: 120,
                               width: width/8,
                               alignment: Alignment.center,
                               child: Row(
                                 children: [
-                                  const  CircleAvatar(radius: 30,
-                                    backgroundColor: Colors.black,
-                                      child: Icon(Icons.person,size: 40,color: Colors.white,),),
-                                  const  SizedBox(width: 20,),
+                                  CircleAvatar(radius: width/55,
+                                    backgroundColor: Colors.blueAccent,
+                                    child: Icon(Icons.person,size: width/50,color: Colors.white,),),
+                                  const  SizedBox(width: 5,),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children:const [
+                                    children:  [
                                       Text("Volunteers"),
-                                      SizedBox(height: 10,),
-                                      Text("01",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: Colors.indigo),)
+                                      const  SizedBox(height: 5,),
+                                      Text("01",style: TextStyle(fontSize: width/50,fontWeight: FontWeight.bold,color: Colors.indigo),)
                                     ],)
                                 ],
                               ),
                             ),
-                          )
+                          ),
+
+
                         ],
                       )
                   ))
@@ -130,7 +132,7 @@ class CenterDetails extends StatelessWidget {
           ),
               // Education
               const  SizedBox(height: 20,),
-              texthead("Center Information"),
+              texthead("Center Information",context),
               const  SizedBox(height: 20,),
 
               Card(
@@ -319,11 +321,11 @@ class CenterDetails extends StatelessWidget {
                 ),
               ),
               const  SizedBox(height: 20,),
-              texthead("Center Attendance Performance "),
+              texthead("Center Attendance Performance ",context),
               const  SizedBox(height: 20,),
               LineGraph(),
               const  SizedBox(height: 20,),
-              texthead("Student Performance based on syllabus "),
+              texthead("Student Performance based on syllabus ",context),
               const  SizedBox(height: 20,),
               Card(
                 child:
@@ -391,7 +393,7 @@ class CenterDetails extends StatelessWidget {
 
 
               const  SizedBox(height: 20,),
-              texthead("Overall Users"),
+              texthead("Overall Users",context),
               const  SizedBox(height: 20,),
           SizedBox(
             width: double.infinity,
@@ -518,8 +520,10 @@ class CenterDetails extends StatelessWidget {
     );
   }
 }
-Widget texthead(String title){
-  return Text(title,style: TextStyle(fontWeight: FontWeight.bold,color: Colors.indigo,fontSize: 30),);
+Widget texthead(String title,context){
+  var width=MediaQuery.of(context).size.width;
+
+  return Text(title,style: TextStyle(fontWeight: FontWeight.bold,color: Colors.indigo,fontSize: width/55),);
 }
 Widget progress(context,String percent,double value){
   return Padding(padding: EdgeInsets.symmetric(vertical: 15),child:   Row(

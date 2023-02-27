@@ -30,8 +30,8 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    namecontroller.text="super";
-    passwordcontroller.text="super@pass";
+    namecontroller.text="teacher";
+    passwordcontroller.text="teacher@pass";
   }
   @override
   Widget build(BuildContext context) {

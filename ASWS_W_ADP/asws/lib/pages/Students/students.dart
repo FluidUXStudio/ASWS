@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:asws/Networking/apiService.dart';
 import 'package:asws/pages/Students/studentdetails.dart';
 import 'package:asws/pages/Students/studenttable.dart';
 import 'package:asws/utils/appColors.dart';
@@ -5,6 +8,8 @@ import 'package:asws/utils/appStrings.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
+import '../../ApiEndPoints/apiendpoint.dart';
+import '../../model/studentmodel.dart';
 import '../../utils/appbar.dart';
 import '../Forms/newstudentForm.dart';
 import '../homepage/linegraph.dart';
@@ -23,11 +28,32 @@ class _StudentsState extends State<Students> {
   bool detailShow=false;
   var  dropdownValue;
   List<String> list = ['New Student', 'Add Student', 'Import Student',];
+  List<StudentModel>modeldata=[];
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     dropdownValue =list.first ;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      getstudent();
+    });
+
+  }
+  getstudent()async{
+    var response= await ApiServices().getApiCall(context, ApiEndPoint.getallstudent);
+
+    if(response!=null){
+      List? body = jsonDecode(response.body);
+    setState(() {
+      modeldata =
+          body?.map((dynamic item) => StudentModel.fromJson(item)).toList() ?? [];
+    });
+
+
+    }else{
+      print("Something went wrong");
+    }
+
   }
 
   @override
@@ -145,7 +171,7 @@ class _StudentsState extends State<Students> {
                 ],
               ),
             const  SizedBox(height: 30,),
-              StudentTable(seeDetails)
+              StudentTable(seeDetails,modeldata )
 
             ],
           ),

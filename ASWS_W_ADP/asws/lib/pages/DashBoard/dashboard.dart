@@ -12,6 +12,7 @@ import '../attendence/attendence.dart';
 import '../homepage/homepage.dart';
 import '../leaderBoard/leaderboard.dart';
 import '../../volunteer/volunteer.dart';
+import '../sylabus/syllabusScreen.dart';
 class DashBoard extends StatefulWidget {
   const DashBoard({Key? key}) : super(key: key);
 
@@ -53,7 +54,7 @@ class _DashBoardState extends State<DashBoard> {
       VolunteerScreen(),
       LeaderBoard(),
       AttendencePage(),
-      Container(),
+      SyllabusScreen(),
       Container(),
       Container(),
 
@@ -67,7 +68,7 @@ class _DashBoardState extends State<DashBoard> {
 
 
     var width=MediaQuery.of(context).size.width;
-    print(width/110,);
+
 
     return Scaffold(
 
@@ -88,8 +89,8 @@ class _DashBoardState extends State<DashBoard> {
                         children: [
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 20),
-                            height: 35,
-                            width: 35,
+                            height: width/30,
+                            width: width/30,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.greenAccent.shade400
@@ -105,29 +106,29 @@ class _DashBoardState extends State<DashBoard> {
                         shrinkWrap: true,
                         itemCount: siderbaritems.length,
                           itemBuilder: (context,index){
-                          return GestureDetector(
-                            onTap: (){
-                              setState(() {
-                                context.read<PageProvider>().updatepage(index);
-                                // selectedIndex=index;
-                              });
+                          return MouseRegion(
+                            cursor: SystemMouseCursors.click,
+                            child: GestureDetector(
+                              onTap: (){
+                                setState(() {
+                                  context.read<PageProvider>().updatepage(index);
+                                  // selectedIndex=index;
+                                });
 
-                            },
-                            child: Container(
-                              margin: EdgeInsets.symmetric(vertical: width/110,),
-                               padding: EdgeInsets.all(width/250),
-                             decoration: BoxDecoration(
-                               color:  page==index?colo.whiteColor:Colors.transparent,
-                               borderRadius: const  BorderRadius.only(topLeft:Radius.circular(35),bottomLeft:Radius.circular(35) )
-                             ),
-                              child:MouseRegion(
-                                cursor: SystemMouseCursors.click,
-                                child: ListTile(
+                              },
+                              child: Container(
+                                margin: EdgeInsets.symmetric(vertical: width/110,),
+                                 padding: EdgeInsets.all(width/250),
+                               decoration: BoxDecoration(
+                                 color:  page==index?colo.whiteColor:Colors.transparent,
+                                 borderRadius: const  BorderRadius.only(topLeft:Radius.circular(35),bottomLeft:Radius.circular(35) )
+                               ),
+                                child:ListTile(
                                   contentPadding: EdgeInsets.zero,
                                   leading: Icon(siderbaritems[index].icon,color:page==index?Theme.of(context).primaryColor: colo.lightwhite,size: width/45,),
                                   title: Text(siderbaritems[index].title,style: TextStyle(color: page==index?Theme.of(context).primaryColor: colo.lightwhite,fontSize: width/75, ),)
-                                ),
-                              ) ,
+                                ) ,
+                              ),
                             ),
                           );
 

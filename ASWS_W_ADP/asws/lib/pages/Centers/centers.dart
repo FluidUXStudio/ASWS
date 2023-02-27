@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../ApiEndPoints/apiendpoint.dart';
+import '../../Networking/apiService.dart';
 import '../../utils/appColors.dart';
 import '../../utils/appStrings.dart';
 import '../../utils/appbar.dart';
@@ -24,6 +26,13 @@ class _CentersPageState extends State<CentersPage> {
     // TODO: implement initState
     super.initState();
     dropdownValue =list.first ;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      getcenter();
+    });
+  }
+  getcenter()async{
+    var response= await ApiServices().getApiCall(context, ApiEndPoint.getzonenames);
+    print("This is respones ==$response");
   }
 
 
