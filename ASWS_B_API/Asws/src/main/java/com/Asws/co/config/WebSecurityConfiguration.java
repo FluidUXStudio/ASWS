@@ -48,6 +48,10 @@ public class WebSecurityConfiguration {
         "/event/**"
         // "/student/**"
     };
+    public static final String[] ROLES = {
+        "teacher",
+        "SuperAdmin"
+    };
 
 
     @Autowired
@@ -102,10 +106,11 @@ public class WebSecurityConfiguration {
             .antMatchers(HttpMethod.POST,"/admin/**").hasRole("SuperAdmin")
             .antMatchers("/admin/admins").permitAll()
             .antMatchers(Public_URLS).permitAll()
-            // .antMatchers(HttpMethod.POST,"/student/**","/teacher/**","/center/**").hasRole("SuperAdmin")
+             .antMatchers(HttpMethod.POST,"/student/**","/teacher/**","/center/**").hasRole("SuperAdmin")
             // .antMatchers(HttpMethod.POST,"/student/**","/teacher/**","/center/**").hasRole("Admin")
-            .antMatchers("/student/**","/events/**","/syllabus/**","/dashboard/**").hasRole("teacher")
-            .antMatchers("/admin").hasAnyAuthority("SuperAdmin","Admin")
+            .antMatchers("/student/**","/events/**","/syllabus/**","/dashboard/**").hasAnyRole(ROLES)
+            .antMatchers("/student/**","/events/**","/syllabus/**","/dashboard/**").hasRole("Supe")
+            .antMatchers("/admin","/student/**").hasAnyAuthority("SuperAdmin","Admin")
             .antMatchers("/sd/**").hasRole("Admin")
             .anyRequest().authenticated()
             .and()
