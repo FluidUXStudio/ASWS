@@ -4,9 +4,7 @@ com/Asws/co/controller/TeacherAttendenceController.class
 com/Asws/co/controller/SyllabusController.class
 com/Asws/co/service/CustomHashMapConverter.class
 com/Asws/co/service/Impl/NotificationServiceImpl.class
-com/Asws/co/response/CenterResponse.class
 com/Asws/co/repository/TeacherRepository.class
-com/Asws/co/config/BeanCnfiguration.class
 com/Asws/co/service/MEthods.class
 com/Asws/co/domain/Notification.class
 com/Asws/co/repository/AttendenceRepository.class
@@ -27,7 +25,6 @@ com/Asws/co/repository/RolesRepository.class
 com/Asws/co/service/ZoneService.class
 com/Asws/co/domain/TeacherAttendence.class
 com/Asws/co/controller/ZoneController.class
-com/Asws/co/repository/CenterRepository.class
 com/Asws/co/config/CorsConfiguration.class
 com/Asws/co/service/RoleService.class
 com/Asws/co/repository/demoRepository.class
@@ -49,13 +46,9 @@ com/Asws/co/config/JwtAuthenticationEntryPoint.class
 com/Asws/co/utils/JwtUtils.class
 com/Asws/co/repository/TeacherAttendenceRepository.class
 com/Asws/co/controller/demoController.class
-com/Asws/co/service/CenterService.class
 com/Asws/co/service/Impl/RoleServiceImpl.class
-com/Asws/co/service/Impl/DashBoardServicecImpl.class
 com/Asws/co/service/StudentService.class
-com/Asws/co/controller/centreController.class
 com/Asws/co/domain/demoImages.class
-com/Asws/co/controller/DashBoardController.class
 com/Asws/co/service/Impl/EmailServiceImpl.class
 com/Asws/co/repository/StudentRepository.class
 com/Asws/co/repository/NotificationRepository.class
@@ -71,7 +64,6 @@ com/Asws/co/domain/demo.class
 com/Asws/co/domain/User.class
 com/Asws/co/repository/demoImageRepository.class
 com/Asws/co/response/EventResponse.class
-com/Asws/co/response/CenterResponse$CenterResponseBuilder.class
 com/Asws/co/domain/JwtResponse.class
 com/Asws/co/domain/Role.class
 com/Asws/co/controller/TeacherController.class
@@ -87,11 +79,9 @@ com/Asws/co/repository/SyllabusRepository.class
 com/Asws/co/config/CorsConfiguration$1.class
 com/Asws/co/controller/AttendenceController.class
 com/Asws/co/response/ZoneResponse.class
-com/Asws/co/service/Impl/CenterServiceImpl.class
 com/Asws/co/service/UserService.class
 com/Asws/co/repository/EventsRepository.class
 com/Asws/co/config/WebSecurityConfiguration.class
-com/Asws/co/domain/Center.class
 com/Asws/co/domain/Attendence.class
 com/Asws/co/service/FileService.class
 com/Asws/co/service/TeacherService.class
