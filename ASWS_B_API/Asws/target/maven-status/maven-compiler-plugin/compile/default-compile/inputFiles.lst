@@ -4,13 +4,13 @@
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/service/Impl/StudentServiceImpl.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/service/CustomHashMapConverter.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/config/CorsConfiguration.java
+/home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/domain/syllabus/Syllabus.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/repository/StudentRepository.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/controller/SyllabusController.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/service/MEthods.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/controller/centreController.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/controller/StudentController.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/domain/Center.java
-/home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/domain/Syllabus.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/repository/SyllabusRepository.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/domain/JwtRequest.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/service/NotificationService.java
@@ -23,6 +23,7 @@
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/controller/JwtController.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/service/UserService.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/AswsApplication.java
+/home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/domain/syllabus/Subject.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/repository/CenterRepository.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/service/CenterService.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/service/Impl/CenterServiceImpl.java
@@ -34,7 +35,6 @@
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/utils/JwtUtils.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/service/EventService.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/controller/demoController.java
-/home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/service/EmailService.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/service/SyllabusService.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/repository/ZoneRepository.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/domain/Teacher.java
@@ -60,6 +60,7 @@
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/service/Impl/DashBoardServicecImpl.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/service/Impl/RoleServiceImpl.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/response/demoResponse.java
+/home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/repository/StudentSubjectRepository.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/controller/TeacherAttendenceController.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/domain/Student.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/domain/StudentAttendence.java
@@ -79,10 +80,12 @@
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/controller/AttendenceController.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/domain/Zone.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/config/BeanCnfiguration.java
+/home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/domain/syllabus/StudentSubject.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/response/StudentAttnPerformanceResponse.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/domain/TeacherAttendence.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/controller/TeacherController.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/repository/EventsRepository.java
+/home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/repository/SubjectRepository.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/service/MyUserServiceDetail.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/service/Impl/ZoneServiceImpl.java
 /home/umran/Imp-Prj/ASWS/ASWS_B_API/Asws/src/main/java/com/Asws/co/controller/EventsControlleer.java

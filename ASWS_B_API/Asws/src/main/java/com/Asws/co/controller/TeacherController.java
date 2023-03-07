@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import javax.mail.MessagingException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.Asws.co.domain.Teacher;
 import com.Asws.co.repository.TeacherRepository;
+import com.Asws.co.service.Impl.EmailServiceImpl;
 import com.Asws.co.service.Impl.TeacherServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -40,11 +43,16 @@ public class TeacherController {
     private ObjectMapper mapper = new ObjectMapper();
 
 
+    @Autowired
+    private EmailServiceImpl emailServiceImpl;
+
+
     @PostMapping({"/registerNewTeacher"})
-    public ResponseEntity<Teacher> createBga(@RequestParam("teacher") String teacher, @RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity<Teacher> createBga(@RequestParam("teacher") String teacher, @RequestParam("file") MultipartFile file) throws IOException, MessagingException {
         Teacher d1 = mapper.readValue(teacher,Teacher.class);
         d1.setPhoto(file.getBytes());
         teacherRepository.save(d1);
+        emailServiceImpl.sendEmail(d1.getEmail().toString(), "password","create Password");
         return ResponseEntity.status(HttpStatus.OK).body(d1);
     }
 

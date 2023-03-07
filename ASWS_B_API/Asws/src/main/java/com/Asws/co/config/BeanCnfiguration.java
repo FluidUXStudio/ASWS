@@ -9,11 +9,11 @@ import com.Asws.co.service.demoService;
 import com.Asws.co.service.Impl.AttendenceServiceImpl;
 import com.Asws.co.service.Impl.CenterServiceImpl;
 import com.Asws.co.service.Impl.DashBoardServicecImpl;
+import com.Asws.co.service.Impl.EmailServiceImpl;
 import com.Asws.co.service.Impl.EventsServiceImpl;
 import com.Asws.co.service.Impl.NotificationServiceImpl;
 import com.Asws.co.service.Impl.RoleServiceImpl;
 import com.Asws.co.service.Impl.StudentServiceImpl;
-import com.Asws.co.service.Impl.SyllabusServiceImpl;
 import com.Asws.co.service.Impl.TeacherAttendenceServiceImpl;
 import com.Asws.co.service.Impl.TeacherServiceImpl;
 import com.Asws.co.service.Impl.UserImpl;
@@ -85,10 +85,6 @@ public class BeanCnfiguration {
         return new ZoneServiceImpl();
     }
 
-    @Bean
-    public SyllabusServiceImpl serviceImpl(){
-        return new SyllabusServiceImpl();
-    }
 
     @Bean
     public NotificationServiceImpl notification(){
@@ -98,6 +94,11 @@ public class BeanCnfiguration {
     @Bean
     public DashBoardServicecImpl dashBoardServicecImpl(){
         return new DashBoardServicecImpl();
+    }
+
+    @Bean
+    public EmailServiceImpl emailServiceImpl(){
+        return new EmailServiceImpl();
     }
 
 }
