@@ -1,5 +1,6 @@
 import 'package:asws_mobile/utils/textutils.dart';
 import 'package:flutter/material.dart';
+// ignore: must_be_immutable
 class Feilds extends StatefulWidget {
   TextEditingController controller;
   String hinttext;
@@ -91,6 +92,7 @@ class _FeildsState extends State<Feilds> {
     );
   }
 }
+// ignore: must_be_immutable
 class Feilds2 extends StatelessWidget {
   TextEditingController controller;
   String hinttext;

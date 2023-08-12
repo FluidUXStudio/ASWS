@@ -31,7 +31,7 @@ class _EventsScreenState extends State<EventsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<Eventsmodel> _evetlist= context.watch<GetEventsProvider>().eventlist ;
+    List<Eventsmodel> _evetlist=  context.watch<GetEventsProvider>().eventlist ;
     bool show= context.watch<GetEventsProvider>().isload ;
 
     return Scaffold(
@@ -180,6 +180,7 @@ class _EventsScreenState extends State<EventsScreen> {
   }
 
   Widget eventcard(context,Eventsmodel data){
+    print(data);
     return  Container(
       margin:const  EdgeInsets.symmetric(vertical: 20),
       padding:const  EdgeInsets.all(15),
@@ -197,7 +198,14 @@ class _EventsScreenState extends State<EventsScreen> {
         //  const   Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",style: TextStyle(fontSize: 10),),
              Text(data.description.toString(),style: TextStyle(fontSize: 10),),
           const   SizedBox(height: 10,),
-          data.selectDate==null?Container(): Text(DateFormat('MM/dd/yyyy, hh:mm a').format( DateTime.fromMillisecondsSinceEpoch(data.selectDate!.toInt())).toString(),style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),),
+          data.date==null?Container(): Text(DateFormat('yyyy-MM-dd, hh:mm a') .format(DateTime(
+                        data.date[0],
+                        data.date[1],
+                        data.date[2],
+                        data.time[0],
+                        data.time[1],
+                      ))
+                      .toString(),style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),),
           const   SizedBox(height: 10,),
 
           // Text("Bahadurpura,Hyderabad ",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),),

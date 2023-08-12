@@ -22,13 +22,10 @@ class ForgetPasswordScreen extends StatelessWidget {
         child: Column(
           children: [
             Container(
-            height: MediaQuery.of(context).size.height*0.5,
+            height: MediaQuery.of(context).size.height*0.4,
               color: Colors.grey.shade200,
-              child:const  Center(
-                child: CircleAvatar(
-                  radius: 70,
-                  backgroundImage: AssetImage("assets/images/forget.jpg"),
-                ),
+              child: Center(
+               child:Image.asset('assets/images/forget.png'),
               ),
           ),
           Container(

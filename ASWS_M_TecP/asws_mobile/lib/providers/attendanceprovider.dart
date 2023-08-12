@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:asws_mobile/model/studentModel/testing.dart';
 import 'package:asws_mobile/utils/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
@@ -7,7 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constant/apiendpoint.dart';
-import '../model/studentmodel.dart';
 import '../screens/attendance/attendencelist.dart';
 import '../utils/loader.dart';
 
@@ -15,37 +14,32 @@ class AttendanceProvider extends ChangeNotifier {
   List<CreateAttendance> allattendancelist = [];
   get getattendancelist => allattendancelist;
 
-  void addAllAttendance(List<StudentModel> studentlist) {
+  void addAllAttendance(List<Welcome> studentlist) {
     for (int i = 0; i < studentlist.length; i++) {
       allattendancelist.add(CreateAttendance(
-        id: "${studentlist[i].id}",
-        name: "${studentlist[i].firstName} ${studentlist[i].lastName}",
-        date: "${DateFormat('yyyy/MM/dd').format(DateTime.now())}",
-        leave: "not",
-        presentabsent: "present",
+        student: Student(id: studentlist[i].id),
+        attendanceDate: "${DateFormat('yyyy-MM-dd').format(DateTime.now())}",
+        status: "present",
       ));
     }
     notifyListeners();
-    debugPrint(allattendancelist.toString());
   }
 
   void updateattendance(var id, bool check, String leave) {
     check
-        ? allattendancelist[allattendancelist
-            .indexWhere((element) => element.id == id)] = CreateAttendance(
-            id: "$id",
-            name: "name",
-            date: "${DateFormat('yyyy/MM/dd').format(DateTime.now())}",
-            leave: "$leave",
-            presentabsent: "absent",
+        ? allattendancelist[allattendancelist.indexWhere(
+            (element) => element.student.id == id)] = CreateAttendance(
+            student: Student(id: id),
+            attendanceDate:
+                "${DateFormat('yyyy-MM-dd').format(DateTime.now())}",
+            status: "absent",
           )
-        : allattendancelist[allattendancelist
-            .indexWhere((element) => element.id == id)] = CreateAttendance(
-            id: "$id",
-            name: "name",
-            date: "${DateFormat('yyyy/MM/dd').format(DateTime.now())}",
-            leave: "not",
-            presentabsent: "present",
+        : allattendancelist[allattendancelist.indexWhere(
+            (element) => element.student.id == id)] = CreateAttendance(
+            student: Student(id: id),
+            attendanceDate:
+                "${DateFormat('yyyy-MM-dd').format(DateTime.now())}",
+            status: "absent",
           );
     notifyListeners();
 
@@ -63,18 +57,21 @@ class AttendanceProvider extends ChangeNotifier {
 
     for (int i = 0; i < allattendancelist.length; i++) {
       requestlist.add({
-        "id": "${allattendancelist[i].id}",
-        "date": "${allattendancelist[i].date}",
-        "leave": "${allattendancelist[i].leave}",
-        "presentAndAbsent": "${allattendancelist[i].presentabsent}"
+        "student": {
+          "id": allattendancelist[i].student.id,
+        },
+        "attendanceDate": "${allattendancelist[i].attendanceDate}",
+        "status": allattendancelist[i].status.toUpperCase(),
       });
     }
+
+    print(jsonEncode(requestlist));
     GlobalMethods().showLoader(ctx, true);
     final prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
     debugPrint("This Is token==$token");
     var result;
-    final url = Uri.parse(ApiEndPoints.baseurl + ApiEndPoints.submitattendance);
+    final url = Uri.parse(ApiEndPoints.baseurl + '/api/students/attendance');
     print(url);
     print(token);
 

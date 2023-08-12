@@ -3,11 +3,9 @@ import 'dart:async';
 import 'package:asws_mobile/providers/attendanceprovider.dart';
 import 'package:asws_mobile/providers/eventproviders/getalleventprovider.dart';
 import 'package:asws_mobile/providers/studentprovider/getstudentprovider.dart';
-import 'package:asws_mobile/screens/dashboard/dashboard.dart';
 import 'package:asws_mobile/screens/signup/onboardscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 void main(){
  runApp( MultiProvider(
    providers: [
@@ -16,7 +14,6 @@ void main(){
      ChangeNotifierProvider(create: (context) => AttendanceProvider()),
    ],
    child: const MyApp(),
-
 
  )
  );
@@ -58,13 +55,13 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
   void gotoScreen() async{
-    final prefs = await SharedPreferences.getInstance();
-    final String? token = prefs.getString('token');
-    if(token==null){
+    // final prefs = await SharedPreferences.getInstance();
+    // final String? token = prefs.getString('token');
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>const OnboardScreen()));
-    }else{
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>const OnboardScreen()));
-    }
+    // if(token==null){
+    // }else{
+    //   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>const OnboardScreen()));
+    // }
 
   }
   @override

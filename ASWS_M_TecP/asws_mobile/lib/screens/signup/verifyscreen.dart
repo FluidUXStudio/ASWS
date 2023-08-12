@@ -30,7 +30,7 @@ class VerifyScreen extends StatelessWidget {
                     Center(
                     child: CircleAvatar(
                       radius: 70,
-                      backgroundImage: AssetImage("assets/images/forget.jpg"),
+                      backgroundImage: AssetImage("assets/images/forget.png"),
                     ),
                   ),
                    SizedBox(height: 20,),

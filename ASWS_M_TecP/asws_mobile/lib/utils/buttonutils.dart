@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// ignore: must_be_immutable
 class Custombutton extends StatelessWidget {
   String title;
   VoidCallback ontap;
@@ -24,6 +25,7 @@ class Custombutton extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class Borderbuton extends StatelessWidget {
   String title;
   VoidCallback ontap;

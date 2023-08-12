@@ -4,7 +4,6 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../constant/apiendpoint.dart';
 import '../../model/eventmodel.dart';
-import '../../utils/loader.dart';
 import '../../utils/toast.dart';
 class GetEventsProvider extends ChangeNotifier{
   List<Eventsmodel>_evetlist=[];

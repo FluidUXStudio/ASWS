@@ -21,9 +21,6 @@ class _SubjectScreenState extends State<SubjectScreen> {
           Expanded(
             child: Wrap(
 
-
-
-
               children: [
                 listitems(1),
                 listitems(1),
@@ -37,9 +34,6 @@ class _SubjectScreenState extends State<SubjectScreen> {
                 listitems(1),
                 listitems(1),
                 listitems(1),
-
-
-
               ],
             ),
           ),
@@ -62,4 +56,5 @@ class _SubjectScreenState extends State<SubjectScreen> {
       ],
     );
   }
+  
 }

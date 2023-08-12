@@ -1,32 +1,34 @@
 class Eventsmodel {
   int? id;
   String? title;
-  String? selectTime;
-  int? selectDate;
+  final List<int> time;
+  final List<int> date;
   String? description;
 
   Eventsmodel(
       {this.id,
-        this.title,
-        this.selectTime,
-        this.selectDate,
-        this.description});
+      this.title,
+      required this.time,
+      required this.date,
+      this.description});
 
-  Eventsmodel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'];
-    selectTime = json['selectTime'];
-    selectDate = json['selectDate'];
-    description = json['description'];
+  factory Eventsmodel.fromJson(Map<String, dynamic> json) {
+    return Eventsmodel(
+      id: json['id'],
+      title: json['title'],
+      time: List<int>.from(json['time']),
+      date: List<int>.from(json['date']),
+      description: json['description'],
+    );
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['selectTime'] = this.selectTime;
-    data['selectDate'] = this.selectDate;
-    data['description'] = this.description;
-    return data;
-  }
+ Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'time': time,
+      'date': date,
+    };
+}
 }

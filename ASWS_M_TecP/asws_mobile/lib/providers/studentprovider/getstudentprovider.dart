@@ -1,13 +1,12 @@
 import 'dart:convert';
-import 'package:asws_mobile/model/studentmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../constant/apiendpoint.dart';
-import '../../utils/loader.dart';
+import '../../model/studentModel/testing.dart';
 import '../../utils/toast.dart';
 class GetStudentProvider extends ChangeNotifier{
-  List<StudentModel>_studentlist=[];
+  List<Welcome>_studentlist=[];
   bool _isload =false;
   get studentlist=>_studentlist;
   get isload=>_isload;
@@ -18,9 +17,13 @@ class GetStudentProvider extends ChangeNotifier{
     // GlobalMethods().showLoader(ctx, true);
       final prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
+    final String? zoneId = prefs.getString('zoneId');
+    final String? centerId = prefs.getString('centerId');
+
+
     debugPrint("This Is token==$token");
       var result;
-      final url = Uri.parse(ApiEndPoints.baseurl+ApiEndPoints.getallstudent);
+      final url = Uri.parse(ApiEndPoints.baseurl+'/api/zones/'+zoneId!+'/centers/'+centerId!+'/students');
       print(url);
       print(token);
 
@@ -41,7 +44,7 @@ class GetStudentProvider extends ChangeNotifier{
         if(response.statusCode==200){
           List<dynamic>? body = jsonDecode(response.body);
           _studentlist =
-              body?.map((dynamic item) => StudentModel.fromJson(item)).toList() ?? [];
+              body?.map((dynamic item) => Welcome.fromJson(item)).toList() ?? [];
 
           notifyListeners();
           debugPrint("Sucessfully Hit the Api");

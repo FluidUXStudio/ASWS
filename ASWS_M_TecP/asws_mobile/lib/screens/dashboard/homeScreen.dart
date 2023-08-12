@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:asws_mobile/constant/apiendpoint.dart';
 import 'package:asws_mobile/utils/buttonutils.dart';
@@ -61,10 +62,10 @@ class _HomeScreenState extends State<HomeScreen> {
       return Future.error("Location permissions are permanently denied");
     }
     streamSubscription =
-        Geolocator.getPositionStream().listen((Position position) {
+        Geolocator.getPositionStream().listen((Position position) async {
       latitude = "latitude ${position.latitude}";
       longitude = "longitude${position.longitude}";
-      getaddressfromlanlong(position);
+      await getaddressfromlanlong(position);
     });
   }
 
@@ -170,14 +171,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: GestureDetector(
                   onDoubleTap: () {
                     setState(() {
+                      print(ispressed);
                       if (ispressed) {
+                        checkoutcall();
+                        print('checkout');
                         endtime = DateTime.now();
                         checkouttime = DateFormat.jm().format(DateTime.now());
                       } else {
+                        print("checkin");
+                        checkincall();
                         starttime = DateTime.now();
                         checkintime = DateFormat.jm().format(DateTime.now());
                       }
                       ispressed = !ispressed;
+                      print(ispressed);
+
                     });
                   },
                   child: Container(
@@ -217,11 +225,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Colors.blue.withOpacity(0.5)
                                   ]),
                       ),
-                      child: Icon(
-                        Icons.touch_app,
-                        color: Colors.white,
-                        size: 50,
-                      ),
+                      child: Image.asset('assets/images/click.png'),
+                      // child: Icon(
+                      //   Icons.touch_app,
+                      //   color: Colors.white,
+                      //   size: 50,
+                      // ),
                     ),
                   ),
                 ),
@@ -312,12 +321,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void gotoaddStudent(context) async {
-    List<String> zonelist = [
-      "center",
-      "Hyderabad",
-      "Secunderabad",
-      "Bandlaguda",
-    ];
+    List<String> zonelist = [];
+
     List<String> parentstatus = [
       "Father",
       "Mother",
@@ -327,15 +332,26 @@ class _HomeScreenState extends State<HomeScreen> {
     final prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
     final url = Uri.parse(ApiEndPoints.baseurl + ApiEndPoints.getzonenames);
+
+    //for centers
     try {
       var response = await get(
         url,
         headers: {"Authorization": "Bearer $token"},
       );
+
+      List<dynamic> data = jsonDecode(await response.body);
+
+      for (var zn in data) {
+        String name = zn['name'];
+        zonelist.add(name);
+      }
+
       GlobalMethods().showLoader(context, false);
       if (response.statusCode == 200) {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => AddStudentScreen(zonelist, parentstatus)));
+            builder: (context) =>
+                AddStudentScreen(zonelist, parentstatus, data)));
       } else {
         showToast("Something Went Wrong");
       }
@@ -349,8 +365,27 @@ class _HomeScreenState extends State<HomeScreen> {
     final prefs = await SharedPreferences.getInstance();
     starttime = DateTime.now();
     checkintime = DateFormat.jm().format(DateTime.now());
+    final String? token = prefs.getString('token');
+    final String? teacherId = prefs.getString('teacherId');
 
-    await prefs.setString('checkin', '$starttime');
+    final url = Uri.parse(
+        ApiEndPoints.baseurl + '/api/teacher/checkin?teacherId=$teacherId');
+
+    try {
+      var response = await post(
+        url,
+        headers: {"Authorization": "Bearer $token"},
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint(response.body);
+      } else {
+        showToast("Something Went Wrong");
+      }
+      await prefs.setString('checkin', '$starttime');
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   void checkoutcall() async {
@@ -358,8 +393,28 @@ class _HomeScreenState extends State<HomeScreen> {
     final prefs = await SharedPreferences.getInstance();
     endtime = DateTime.now();
     checkouttime = DateFormat.jm().format(DateTime.now());
+    final String? token = prefs.getString('token');
+    final String? teacherId = prefs.getString('teacherId');
 
+    final url = Uri.parse(
+        ApiEndPoints.baseurl + '/api/teacher/checkout?teacherId=$teacherId');
+
+    try {
+      var response = await post(
+        url,
+        headers: {"Authorization": "Bearer $token"},
+      );
+
+      if (response.statusCode == 200) {
+        debugPrint(response.body);
+      } else {
+        showToast("Something Went Wrong");
+      }
     await prefs.setString('checkout', '$endtime');
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+
   }
 
   Widget totaltime(DateTime checkintime, DateTime checkouttime) {

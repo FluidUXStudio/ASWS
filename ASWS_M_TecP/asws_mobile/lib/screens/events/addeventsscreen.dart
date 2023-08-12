@@ -5,12 +5,15 @@ import 'package:asws_mobile/utils/textfeildutils.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constant/apiendpoint.dart';
+import '../../providers/attendanceprovider.dart';
 import '../../utils/loader.dart';
 import '../../utils/textutils.dart';
 import '../../utils/toast.dart';
+import '../attendance/attendencelist.dart';
 class AddEventsScreen extends StatefulWidget {
    AddEventsScreen({Key? key}) : super(key: key);
 
@@ -63,6 +66,11 @@ class _AddEventsScreenState extends State<AddEventsScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+     List<CreateAttendance> attendancelist =
+        context.watch<AttendanceProvider>().getattendancelist;
+
+        print(attendancelist);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
@@ -185,8 +193,8 @@ class _AddEventsScreenState extends State<AddEventsScreen> {
                 if (_formKey.currentState!.validate()) {
                   var data= {
                     "description": _descriptin.text.toString(),
-                    "selectDate": _datecontroller.text.toString(),
-                     "selectTime": "${_timecontroller.text}:0",
+                    "date": _datecontroller.text.toString(),
+                    "time": "${_timecontroller.text.toString()}:00",
                     "title": _eventtitle.text.toString(),
                   };
                   addeventcall(context,data);
@@ -215,7 +223,8 @@ class _AddEventsScreenState extends State<AddEventsScreen> {
      final String? token = prefs.getString('token');
      var result;
 
-        var body= jsonEncode(data);
+      var body= jsonEncode(data);
+      print(body);
      final url = Uri.parse(ApiEndPoints.baseurl+ApiEndPoints.addnewevent);
 
 

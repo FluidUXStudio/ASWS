@@ -45,6 +45,5 @@ public class Center {
 
     private Integer waqtBoardNumber;
     
-
     
 }

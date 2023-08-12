@@ -45,7 +45,7 @@ class SignInScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Feilds(controller:emailcontroller, hinttext: 'Name', ispassword: false,title: "Name",),
+                      // Feilds(controller:emailcontroller, hinttext: 'Name', ispassword: false,title: "Name",),
                       const SizedBox(height: 20,),
                       Feilds(controller:emailcontroller, hinttext: 'Email', ispassword: false,title: "Your Email",),
                       const SizedBox(height: 20,),
@@ -56,7 +56,7 @@ class SignInScreen extends StatelessWidget {
                       Custombutton(title: "Create account", ontap: (){
                         if (_formKey.currentState!.validate()) {
 
-
+                          
                         }
 
                       }),

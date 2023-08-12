@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:asws_mobile/model/studentmodel.dart';
+import 'package:asws_mobile/model/studentModel/studentModels.dart';
+import 'package:asws_mobile/model/studentModel/testing.dart';
 import 'package:asws_mobile/screens/student/studentdetailscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shimmer/shimmer.dart';
 
 import '../../providers/studentprovider/getstudentprovider.dart';
 import '../../utils/loader.dart';
@@ -27,7 +27,7 @@ class _StudentListState extends State<StudentList> {
 
   @override
   Widget build(BuildContext context) {
-    List<StudentModel> _studentlist= context.watch<GetStudentProvider>().studentlist ;
+    List<Welcome> _studentlist= context.watch<GetStudentProvider>().studentlist ;
     bool isLoad=context.watch<GetStudentProvider>().isload ;
 
     return SingleChildScrollView(
@@ -90,8 +90,8 @@ class _StudentListState extends State<StudentList> {
                     contentPadding: EdgeInsets.zero,
                     leading:
                       CircleAvatar(radius: 30,
-                      backgroundImage:MemoryImage(const Base64Decoder().convert(_studentlist[index].photo.toString())),),
-                    title:  Text("${_studentlist[index].firstName} ${_studentlist[index].lastName} ",style: TextStyle(fontWeight: FontWeight.bold),),
+                      backgroundImage:MemoryImage(const Base64Decoder().convert(_studentlist[index].imageData)),),
+                    title:  Text("${_studentlist[index].studentDetails.firstName} ${_studentlist[index].studentDetails.lastName} ",style: TextStyle(fontWeight: FontWeight.bold),),
                     subtitle: Text("ID:${_studentlist[index].id}",style: TextStyle(color: Theme.of(context).primaryColor),),
                     trailing: const CircleAvatar(
                       child: Icon(Icons.arrow_forward_ios,size: 15,),

@@ -21,6 +21,8 @@ class OnboardScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset("assets/images/study.png"),
+
+                  const SizedBox(height: 20,),
                   heading2("Learning at Home Anything"),
                  const  SizedBox(height: 20,),
                   normalgreytext("We' are Providing the best \n      online courses to you."),
