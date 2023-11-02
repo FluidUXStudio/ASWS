@@ -18,6 +18,31 @@ class GlobalMethods {
       Navigator.of(ctx).pop();
     }
   }
+
+  void showLoaderNoBag(BuildContext ctx, bool showLoader) {
+  if (showLoader) {
+    showDialog(
+      barrierDismissible: false,
+      context: ctx,
+      builder: (ctx) {
+        return Stack(
+          alignment: Alignment.center,
+          children: [
+            CircularProgressIndicator(), // Replace with your loader widget
+          ],
+        );
+      },
+    );
+  } else {
+    Navigator.of(ctx).pop();
+  }
+}
+
+
+
+
+
+
 }
 
 class StudentShimmer extends StatelessWidget {

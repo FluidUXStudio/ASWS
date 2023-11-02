@@ -1,9 +1,20 @@
+import 'dart:math';
+
+import 'package:asws_mobile/providers/getStudentPerformence.dart';
 import 'package:asws_mobile/utils/buttonutils.dart';
+import 'package:asws_mobile/utils/loader.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../model/studentModel/testing.dart';
+import '../../providers/eventproviders/getAllsubjectsProviders.dart';
+import '../../providers/studentprovider/getstudentprovider.dart';
+
 class StudentPerformanceScreen extends StatefulWidget {
-  StudentPerformanceScreen({Key? key}) : super(key: key);
+  final List<Welcome> studenlist;
+  StudentPerformanceScreen({Key? key, required this.studenlist})
+      : super(key: key);
 
   @override
   State<StudentPerformanceScreen> createState() =>
@@ -11,11 +22,37 @@ class StudentPerformanceScreen extends StatefulWidget {
 }
 
 class _StudentPerformanceScreenState extends State<StudentPerformanceScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+      Future.delayed(Duration(milliseconds: 100), () {
+    showLoaderFor4Seconds(context);
+  });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      context
+          .read<GetStudentPerformanceProvider>()
+          .getstudentsPerformancelist(context, widget.studenlist);
+    });
+  }
+
   String? studentper;
   String? gender;
 
-  @override
   Widget build(BuildContext context) {
+    List<Student> _studentPerlist =
+        context.watch<GetStudentPerformanceProvider>().studentperfoemancelist;
+    //  _isload=false;
+    List<_SalesData> data = [
+      _SalesData(_studentPerlist[0].studentName.firstName,
+          _studentPerlist[0].performance),
+      _SalesData(_studentPerlist[1].studentName.firstName,
+          _studentPerlist[1].performance),
+      _SalesData(_studentPerlist[2].studentName.firstName,
+          _studentPerlist[2].performance)
+    ];
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -65,13 +102,7 @@ class _StudentPerformanceScreenState extends State<StudentPerformanceScreen> {
               const SizedBox(
                 height: 30,
               ),
-              progressitems("Mohd Siraj Uddin", ""),
-              progressitems("Abdul Quddus", ""),
-              progressitems("Mohd Misbah", ""),
-              progressitems("Mohd Amar Abdul Ahad", ""),
-              progressitems("Sameed Bin Ali", ""),
-              progressitems("Mohd Mustafa Hussain", ""),
-              progressitems("Mohd Huzaifa", ""),
+              progressItems(_studentPerlist),
             ],
           ),
         ),
@@ -79,29 +110,65 @@ class _StudentPerformanceScreenState extends State<StudentPerformanceScreen> {
     );
   }
 
-  Widget progressitems(String name, String percent) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [Text(name), Text(percent)],
+  // Widget progressitems(List<Student> studentPerformances) {
+
+  //   studentPerformances.map{e => e.name}
+
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(vertical: 20),
+  //     child: Column(
+  //       children: [
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [Text(name), Text(percent)],
+  //         ),
+  //         const SizedBox(
+  //           height: 10,
+  //         ),
+  //         ClipRRect(
+  //           borderRadius: BorderRadius.circular(10),
+  //           child: LinearProgressIndicator(
+  //             value: 0.8,
+  //             backgroundColor: Colors.grey.shade300,
+  //             color: Colors.blue,
+  //             minHeight: 8,
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+  Widget progressItems(List<Student> studentPerformances) {
+    return Column(
+      children: studentPerformances.map((student) {
+        String name =
+            '${student.studentName.firstName} ${student.studentName.lastName}';
+        double percent = student.performance;
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [Text(name), Text('$percent%')],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: LinearProgressIndicator(
+                  value: percent / 100,
+                  backgroundColor: Colors.grey.shade300,
+                  color: Colors.blue,
+                  minHeight: 8,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: LinearProgressIndicator(
-              value: 0.8,
-              backgroundColor: Colors.grey.shade300,
-              color: Colors.blue,
-              minHeight: 8,
-            ),
-          ),
-        ],
-      ),
+        );
+      }).toList(),
     );
   }
 
@@ -123,13 +190,12 @@ class _StudentPerformanceScreenState extends State<StudentPerformanceScreen> {
                 children: [
                   Row(
                     children: [
-                      const Expanded(
-                          child: Center(
-                              child: Text(
+                      Expanded(
+                          child: Text(
                         "Search Filter",
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w500),
-                      ))),
+                      )),
                       GestureDetector(
                         onTap: () {
                           Navigator.pop(context);
@@ -255,11 +321,17 @@ class _StudentPerformanceScreenState extends State<StudentPerformanceScreen> {
         });
   }
 
-  List<_SalesData> data = [
-    _SalesData('Mohd Muzammil', 34),
-    _SalesData('Syed Haris Hussain', 32),
-    _SalesData('Syed Ahmed Ali', 40)
-  ];
+  void showLoaderFor4Seconds(ctx) {
+    setState(() {
+      GlobalMethods().showLoaderNoBag(ctx, true);
+    });
+
+    Future.delayed(Duration(seconds: 4), () {
+    setState(() {
+       GlobalMethods().showLoaderNoBag(ctx, false);
+    });
+  });
+  }
 }
 
 class _SalesData {

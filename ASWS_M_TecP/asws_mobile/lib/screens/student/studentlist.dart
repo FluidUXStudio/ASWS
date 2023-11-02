@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:asws_mobile/model/studentModel/studentModels.dart';
 import 'package:asws_mobile/model/studentModel/testing.dart';
 import 'package:asws_mobile/screens/student/studentdetailscreen.dart';
 import 'package:flutter/material.dart';
@@ -77,7 +76,7 @@ class _StudentListState extends State<StudentList> {
                 itemBuilder: (context,index){
               return GestureDetector(
                 onTap: (){
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>StudentDetailsScreen()));
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>StudentDetailsScreen(studentId:_studentlist[index].id,studentName: _studentlist[index].studentDetails.firstName,)));
                 },
                 child: Container(
                   margin: const EdgeInsets.symmetric(vertical: 10),

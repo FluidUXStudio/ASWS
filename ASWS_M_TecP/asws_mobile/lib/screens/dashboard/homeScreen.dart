@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 import 'package:asws_mobile/constant/apiendpoint.dart';
 import 'package:asws_mobile/utils/buttonutils.dart';
@@ -10,8 +11,10 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../providers/profileProvider.dart';
 import '../../utils/loader.dart';
 import '../notifications/notificationscreen.dart';
 import '../profile/profilescreen.dart';
@@ -70,16 +73,63 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   getaddressfromlanlong(Position position) async {
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
-    Placemark place = placemarks[0];
-    setState(() {
-      address = '${place.subLocality},${place.country}';
-    });
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+
+      if (placemarks.isNotEmpty) {
+        Placemark placemark = placemarks[0];
+        setState(() {
+          address = placemark.street! +
+              ', ' +
+              placemark.subLocality! +
+              ', ' +
+              placemark.locality! +
+              ', ' +
+              placemark.administrativeArea! +
+              ' ' +
+              placemark.postalCode! +
+              ', ' +
+              placemark.country!;
+        });
+      }
+    } catch (error) {
+      print(error);
+    }
   }
+
+  Future<Map<String, dynamic>> getCoordinatesFromPlusCode(
+      String plusCode) async {
+    final apiKey = 'YOUR_GOOGLE_MAPS_API_KEY';
+    final url =
+        'https://maps.googleapis.com/maps/api/geocode/json?address=$plusCode&key=$apiKey';
+
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final decoded = json.decode(response.body);
+      if (decoded['status'] == 'OK') {
+        return decoded['results'][0]['geometry']['location'];
+      }
+    }
+
+    return {}; // Return empty map if something goes wrong
+  }
+  // List<Placemark> placemarks =
+  //     await placemarkFromCoordinates(position.latitude, position.longitude);
+  // Placemark place = placemarks[0];
+  // setState(() {
+  //   address = '${place.subLocality},${place.country}';
+  // });
+  // }
 
   @override
   Widget build(BuildContext context) {
+    context.read<GetProfileProvider>().initialize();
+    String? image = context.watch<GetProfileProvider>().image;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
@@ -128,9 +178,10 @@ class _HomeScreenState extends State<HomeScreen> {
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => ProfileScreen()));
             },
-            child: const CircleAvatar(
+            child: CircleAvatar(
               radius: 17,
-              backgroundImage: AssetImage("assets/images/person.jpeg"),
+              backgroundImage:
+                  MemoryImage(const Base64Decoder().convert(image!)),
             ),
           ),
           const SizedBox(
@@ -170,22 +221,21 @@ class _HomeScreenState extends State<HomeScreen> {
               Center(
                 child: GestureDetector(
                   onDoubleTap: () {
+                    print(ispressed);
+                    if (ispressed) {
+                      // checkoutcall();
+                      print('checkout');
+                      endtime = DateTime.now();
+                      checkouttime = DateFormat.jm().format(DateTime.now());
+                    } else {
+                      print("checkin");
+                      // checkincall();
+                      starttime = DateTime.now();
+                      checkintime = DateFormat.jm().format(DateTime.now());
+                    }
                     setState(() {
-                      print(ispressed);
-                      if (ispressed) {
-                        checkoutcall();
-                        print('checkout');
-                        endtime = DateTime.now();
-                        checkouttime = DateFormat.jm().format(DateTime.now());
-                      } else {
-                        print("checkin");
-                        checkincall();
-                        starttime = DateTime.now();
-                        checkintime = DateFormat.jm().format(DateTime.now());
-                      }
                       ispressed = !ispressed;
                       print(ispressed);
-
                     });
                   },
                   child: Container(
@@ -350,8 +400,9 @@ class _HomeScreenState extends State<HomeScreen> {
       GlobalMethods().showLoader(context, false);
       if (response.statusCode == 200) {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) =>
-                AddStudentScreen(zonelist, parentstatus, data)));
+          builder: (context) => AddStudentScreen(zonelist, parentstatus, data),
+          settings: RouteSettings(arguments: ispressed),
+        ));
       } else {
         showToast("Something Went Wrong");
       }
@@ -410,11 +461,10 @@ class _HomeScreenState extends State<HomeScreen> {
       } else {
         showToast("Something Went Wrong");
       }
-    await prefs.setString('checkout', '$endtime');
+      await prefs.setString('checkout', '$endtime');
     } catch (e) {
       debugPrint(e.toString());
     }
-
   }
 
   Widget totaltime(DateTime checkintime, DateTime checkouttime) {

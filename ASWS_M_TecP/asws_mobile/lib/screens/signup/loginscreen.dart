@@ -28,7 +28,6 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       body: Form(
         key: _formKey,
@@ -87,8 +86,11 @@ class LoginScreen extends StatelessWidget {
                           FocusManager.instance.primaryFocus?.unfocus();
                           // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>DashBoard()));
                           if (_formKey.currentState!.validate()) {
-                            loginApiCall(emailcontroller.text,
-                                passwordcontroller.text, context);
+                          //   loginApiCall(
+                          //       "ahmed@gmail.com", "ahmed@pass", context);
+                          // }
+                            loginApiCall(
+                                emailcontroller.text,passwordcontroller.text, context);
                           }
                         }),
                     const SizedBox(
@@ -211,16 +213,23 @@ class LoginScreen extends StatelessWidget {
         for (var pof in pdata) {
           var cs = pof['center'];
           var zs = pof['zone'];
+          var teacherdetails = pof['teacher_details'];
+          String profile = jsonEncode(teacherdetails);
+
+          // print(teacherdetails);
           await prefs.setString('centerId', cs['id'].toString());
-          await prefs.setString('teacherId',pof['id'].toString());
+          await prefs.setString('teacherProfile', profile);
+          await prefs.setString('teacherProfileImage',pof['imageData'].toString());
+          await prefs.setString('teacherId', pof['id'].toString());
           await prefs.setString('zoneId', zs['id'].toString());
+          print("image"+pof['imageData'].toString());
         }
 
         final String? s = prefs.getString('email');
 
         debugPrint(result.toString());
         debugPrint(s);
-        
+
         Navigator.of(ctx).pushReplacement(
           MaterialPageRoute(builder: (context) => DashBoard()),
         );

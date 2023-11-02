@@ -1,0 +1,47 @@
+{
+    "version": "0.2.0",
+     "configurations": [
+      {
+        "type": "java",
+        "name": "ExcelReader",
+        "request": "launch",
+        "mainClass": "com.ahlesunnat.asws.service.impl.ExcelReader",
+        "projectName": "asws"
+      },
+      {
+        "type": "java",
+        "name": "StudentController",
+        "request": "launch",
+        "mainClass": "com.ahlesunnat.asws.controller.StudentController",
+        "projectName": "asws"
+      },
+      {
+        "type": "java",
+        "name": "StudentServiceImpl",
+        "request": "launch",
+        "mainClass": "com.ahlesunnat.asws.service.impl.StudentServiceImpl",
+        "projectName": "asws"
+      },
+      {
+        "type": "java",
+        "name": "GoogleDriveImageDownloader",
+        "request": "launch",
+        "mainClass": "com.ahlesunnat.asws.service.impl.GoogleDriveImageDownloader",
+        "projectName": "asws"
+      },
+      {
+        "type": "java",
+        "name": "Debug (Launch)",
+        "request": "launch",
+        "mainClass": "",
+        "args": ""
+      },
+      {
+        "type": "java",
+        "name": "Debug (Attach)",
+        "request": "attach",
+        "hostName": "localhost",
+        "port": 8000
+      }
+    ] 
+   }

@@ -17,10 +17,10 @@ class ApiEndPoints {
 
   
 // baseurl
-  // static String baseurl = "http://100.20.5.236:8084";
+  static String baseurl = "http://asws-env.eba-m7phkd2j.us-east-1.elasticbeanstalk.com";
 
   
-  static String baseurl = "http://localhost:8084";
+  // static String baseurl = "http://localhost:5000";
 
 
 
@@ -34,6 +34,12 @@ class ApiEndPoints {
   static String addnewevent = "/api/events";
   // get all events
   static String getallevents = "/api/events";
+    static String createTeacher = "/registerNewTeacher";
+
+
+    static String getallsubjects = "/api/subjects";
+
+
   // get all zone names
   static String getzonenames = "/api/zones";
   //  submit attendance

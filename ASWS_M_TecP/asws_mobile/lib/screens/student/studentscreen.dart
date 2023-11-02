@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:provider/provider.dart';
 
+import '../../model/studentModel/testing.dart';
 import '../../providers/studentprovider/getstudentprovider.dart';
 import '../notifications/notificationscreen.dart';
 import '../profile/profilescreen.dart';
@@ -16,7 +17,6 @@ class StudentScreen extends StatefulWidget {
 
 class _StudentScreenState extends State<StudentScreen> {
   int _selectedscreen=0;
-  List<Widget>bodyitems=[StudentList(),StudentPerformanceScreen(),];
   @override
   void initState() {
     // TODO: implement initState
@@ -28,6 +28,8 @@ class _StudentScreenState extends State<StudentScreen> {
 
   @override
   Widget build(BuildContext context) {
+        List<Welcome> _studentlist= context.watch<GetStudentProvider>().studentlist ;
+  List<Widget>bodyitems=[StudentList(),StudentPerformanceScreen(studenlist:_studentlist),];
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,

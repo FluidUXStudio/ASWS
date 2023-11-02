@@ -1,8 +1,15 @@
+import 'dart:convert';
+
 import 'package:asws_mobile/utils/textutils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../constant/apiendpoint.dart';
 import '../../utils/buttonutils.dart';
+import '../../utils/toast.dart';
 
 class AttendanceAnalytics extends StatefulWidget {
   AttendanceAnalytics({Key? key}) : super(key: key);
@@ -15,8 +22,29 @@ class _AttendanceAnalyticsState extends State<AttendanceAnalytics> {
   String? attendance;
   String? gender;
   @override
-  Widget build(BuildContext context) {
-    final List<ChartData> chartData = [
+  Widget build(BuildContext context,) {
+
+    // final List<AttendanceSummary> summaryList = [];
+    // Future<Map<String, dynamic>> jsonData = getAnalytics(context);
+    // jsonData.then((Map<String, dynamic> analyticsData) {
+    //   // Now you can use the analyticsData variable to access the data
+    //   AttendanceSummary summary = AttendanceSummary.fromJson(analyticsData);
+    //   summaryList.add(AttendanceSummary(
+    //     leaveCount: summary.leaveCount,
+    //     endDate: summary.endDate,
+    //     presentCount: summary.presentCount,
+    //     totalStudents: summary.totalStudents,
+    //     absentCount: summary.absentCount,
+    //     startDate: summary.startDate,
+    //   ));
+
+    //   // Use summary as needed in your code
+    // });
+    Future<AttendanceSummary> summary = getAnalytics(context);
+
+
+// Convert List<AttendanceSummary> to List<Summary>
+ final List<ChartData> chartData = [
       ChartData(
         'Present',
         45,
@@ -78,8 +106,8 @@ class _AttendanceAnalyticsState extends State<AttendanceAnalytics> {
                 // Render pie chart
                 PieSeries<ChartData, String>(
                   dataSource: chartData,
-                  xValueMapper: (ChartData data, _) => data.x,
-                  yValueMapper: (ChartData data, _) => data.y,
+                  xValueMapper: (ChartData data, _) => data.x, // Replace "x" with the actual property you want to use as the x-value
+                  yValueMapper: (ChartData data, _) => data.y, // Replace "y" with the actual property you want to use as the y-value
                 ),
               ],
             )),
@@ -103,11 +131,11 @@ class _AttendanceAnalyticsState extends State<AttendanceAnalytics> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Present",
+                       "present",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "92%",
+                         "92",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       )
                     ],
@@ -139,7 +167,7 @@ class _AttendanceAnalyticsState extends State<AttendanceAnalytics> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "6%",
+                        "7",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       )
                     ],
@@ -171,7 +199,7 @@ class _AttendanceAnalyticsState extends State<AttendanceAnalytics> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "2",
+                        "3",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       )
                     ],
@@ -324,8 +352,78 @@ class _AttendanceAnalyticsState extends State<AttendanceAnalytics> {
           });
         });
   }
+
+  Future<AttendanceSummary> getAnalytics(ctx) async {
+    Map<String, dynamic> jsonData = {}; // Initialize an empty map
+    debugPrint("This is Chapter list");
+    // GlobalMethods().showLoader(ctx, true);
+    final prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+    debugPrint("This Is token==$token");
+    var result;
+    final url = Uri.parse(ApiEndPoints.baseurl +
+        "/api/students/attendance/summary?startDate=2023-09-12");
+    print(url);
+    try {
+      var response = await get(
+        url,
+        headers: {"Authorization": "Bearer $token"},
+      );
+      // GlobalMethods().showLoader(ctx, false);
+      if (response.body.isNotEmpty) {
+        result = json.decode(response.body);
+        if (result is Map<String, dynamic>) {
+          jsonData =
+              result; // Assign the result to jsonData if it's a valid map
+        }
+      }
+      debugPrint(result.toString());
+      if (response.statusCode == 200) {
+        // jsonData.addAll(json.decode(response.body)); // This line is not needed
+
+        debugPrint("Successfully Hit the Api");
+        debugPrint(result.toString());
+      } else {
+        showToast("Something went wrong");
+        debugPrint("Something went wrong");
+      }
+    } catch (error) {
+      debugPrint(error.toString());
+    }
+    AttendanceSummary summary = AttendanceSummary.fromJson(jsonData);
+
+    return summary;
+  }
 }
 
+class AttendanceSummary {
+  final int leaveCount;
+  final List<int> endDate;
+  final int presentCount;
+  final int totalStudents;
+  final int absentCount;
+  final List<int> startDate;
+
+  AttendanceSummary({
+    required this.leaveCount,
+    required this.endDate,
+    required this.presentCount,
+    required this.totalStudents,
+    required this.absentCount,
+    required this.startDate,
+  });
+
+  factory AttendanceSummary.fromJson(Map<String, dynamic> json) {
+    return AttendanceSummary(
+      leaveCount: json['leaveCount'] ?? 0,
+      endDate: List<int>.from(json['endDate'] ?? []),
+      presentCount: json['presentCount'] ?? 0,
+      totalStudents: json['totalStudents'] ?? 0,
+      absentCount: json['absentCount'] ?? 0,
+      startDate: List<int>.from(json['startDate'] ?? []),
+    );
+  }
+}
 class ChartData {
   final String x;
   final double y;

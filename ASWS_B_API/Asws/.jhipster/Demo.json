@@ -1,0 +1,21 @@
+{
+  "changelogDate": "20230713084458",
+  "clientRootFolder": "asws",
+  "databaseType": "sql",
+  "dto": "no",
+  "entityTableName": "demo",
+  "fields": [
+    {
+      "fieldName": "teting",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": false,
+  "microserviceName": "asws",
+  "name": "Demo",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

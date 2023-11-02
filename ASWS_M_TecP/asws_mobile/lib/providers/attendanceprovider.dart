@@ -25,32 +25,98 @@ class AttendanceProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateattendance(var id, bool check, String leave) {
-    check
-        ? allattendancelist[allattendancelist.indexWhere(
-            (element) => element.student.id == id)] = CreateAttendance(
-            student: Student(id: id),
-            attendanceDate:
-                "${DateFormat('yyyy-MM-dd').format(DateTime.now())}",
-            status: "absent",
-          )
-        : allattendancelist[allattendancelist.indexWhere(
-            (element) => element.student.id == id)] = CreateAttendance(
-            student: Student(id: id),
-            attendanceDate:
-                "${DateFormat('yyyy-MM-dd').format(DateTime.now())}",
-            status: "absent",
-          );
+  void markAllPresent() {
+    for (var attendance in allattendancelist) {
+      attendance.status = "present";
+      print(attendance.status);
+    }
     notifyListeners();
-
-    // allattendancelist.firstWhere((element) => element.id == id) = CreateAttendance(
-    //   id: "$i",
-    //   name:"${studentlist[i].firstName} ${studentlist[i].lastName}",
-    //   date:"${DateFormat('yyyy/MM/dd').format(DateTime.now())}",
-    //   leave:"not",
-    //   presentabsent:"present",
-    // );
   }
+
+  void markAllAbsent() {
+    for (var attendance in allattendancelist) {
+      attendance.status = "absent";
+      print(attendance.status);
+    }
+    notifyListeners();
+  }
+
+  void updateattendance(int id) {
+    var attendanceIndex =
+        allattendancelist.indexWhere((element) => element.student.id == id);
+
+    if (attendanceIndex != -1) {
+      var currentStatus = allattendancelist[attendanceIndex].status;
+      // print("Current status for student with ID $id: $currentStatus");
+
+      allattendancelist[attendanceIndex] = CreateAttendance(
+        student: Student(id: id),
+        attendanceDate: "${DateFormat('yyyy-MM-dd').format(DateTime.now())}",
+        status: currentStatus == "present" ? "absent" : "present",
+      );
+
+      notifyListeners();
+    }
+  }
+
+  void updateAllAttendanceStatus(List<Welcome> studentlist, bool allAbsent) {
+    final String newStatus = allAbsent ? "absent" : "present";
+    for (var i = 0; i < studentlist.length; i++) {
+      var studentId = studentlist[i].id;
+      var attendanceIndex = allattendancelist
+          .indexWhere((element) => element.student.id == studentId);
+      if (attendanceIndex != -1) {
+        allattendancelist[attendanceIndex] = CreateAttendance(
+          student: Student(id: studentId),
+          attendanceDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+          status: newStatus,
+        );
+      }
+    }
+    notifyListeners();
+  }
+
+  void updateattendanceForLeave(int id) {
+    var attendanceIndex =
+        allattendancelist.indexWhere((element) => element.student.id == id);
+
+    if (attendanceIndex != -1) {
+      allattendancelist[attendanceIndex] = CreateAttendance(
+        student: Student(id: id),
+        attendanceDate: "${DateFormat('yyyy-MM-dd').format(DateTime.now())}",
+        status: "leave",
+      );
+
+      notifyListeners();
+    }
+  }
+
+  // void updateattendance(int id, bool check, String leave) {
+  //   check
+  //       ? allattendancelist[allattendancelist.indexWhere(
+  //           (element) => element.student.id == id)] = CreateAttendance(
+  //           student: Student(id: id),
+  //           attendanceDate:
+  //               "${DateFormat('yyyy-MM-dd').format(DateTime.now())}",
+  //           status: "present",
+  //         )
+  //       : allattendancelist[allattendancelist.indexWhere(
+  //           (element) => element.student.id == id)] = CreateAttendance(
+  //           student: Student(id: id),
+  //           attendanceDate:
+  //               "${DateFormat('yyyy-MM-dd').format(DateTime.now())}",
+  //           status: "absent",
+  //         );
+  //   notifyListeners();
+
+  //   // allattendancelist.firstWhere((element) => element.id == id) = CreateAttendance(
+  //   //   id: "$i",
+  //   //   name:"${studentlist[i].firstName} ${studentlist[i].lastName}",
+  //   //   date:"${DateFormat('yyyy/MM/dd').format(DateTime.now())}",
+  //   //   leave:"not",
+  //   //   presentabsent:"present",
+  //   // );
+  // }
 
   void submitattendance(ctx) async {
     List<Map<String, dynamic>> requestlist = [];

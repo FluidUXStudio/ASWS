@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:asws_mobile/model/studentModel/siblingDetails.dart';
 import 'package:asws_mobile/utils/textfeildutils.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -11,8 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constant/apiendpoint.dart';
-import '../../model/studentModel/familyInformation.dart';
-import '../../model/studentModel/studentDetails.dart';
+import '../../model/studentModel/testing.dart';
 import '../../utils/loader.dart';
 import '../../utils/textutils.dart';
 import '../../utils/toast.dart';
@@ -189,8 +187,9 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
               content: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(
-                    child: Stack(
+                  // Center(
+                  //   child: 
+                    Stack(
                       children: [
                         userimage == null
                             ? const CircleAvatar(
@@ -216,7 +215,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                         )
                       ],
                     ),
-                  ),
+                  // ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -831,42 +830,42 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
 
 //     final centerId = userdata.getString("centerId");
 
-    // StudentDetails studentDetails = StudentDetails(
-    //   firstName: _firstnamecontroller.text,
-    //   lastName: _lastnamecontroller.text,
-    //   city: _citycontroller.text,
-    //   email: _emailcontroller.text,
-    //   phone: int.parse(_phonecontroller.text),
-    //   state: _statecontroller.text,
-    //   address: _addresscontroller.text,
-    //   pinCode: int.parse(_pincodecontroller.text),
-    //   schoolName: _schoolcontroller.text,
-    //   adharNumber: int.parse(_adhaarcontroller.text),
-    //   dateOfBirth: _dobcontroller.text,
+  // StudentDetails studentDetails = StudentDetails(
+  //   firstName: _firstnamecontroller.text,
+  //   lastName: _lastnamecontroller.text,
+  //   city: _citycontroller.text,
+  //   email: _emailcontroller.text,
+  //   phone: int.parse(_phonecontroller.text),
+  //   state: _statecontroller.text,
+  //   address: _addresscontroller.text,
+  //   pinCode: int.parse(_pincodecontroller.text),
+  //   schoolName: _schoolcontroller.text,
+  //   adharNumber: int.parse(_adhaarcontroller.text),
+  //   dateOfBirth: _dobcontroller.text,
 
-    //   // Other properties for student details
-    // );
+  //   // Other properties for student details
+  // );
 
-    // SiblingInformation siblingInformation = SiblingInformation(
-    //   sibAge: int.parse(_siblingagecontroller.text),
-    //   brOrSis: broorsis!,
-    //   sibStandard: _siblingstandardcontroller.text,
-    //   siblingSchool: _siblingschoolnamecontroller.text,
-    //   siblingStuding: sib,
-    //   siblingFullName: _siblingfullnamecontroller.text,
-    //   // Other properties for sibling information
-    // );
+  // SiblingInformation siblingInformation = SiblingInformation(
+  //   sibAge: int.parse(_siblingagecontroller.text),
+  //   brOrSis: broorsis!,
+  //   sibStandard: _siblingstandardcontroller.text,
+  //   siblingSchool: _siblingschoolnamecontroller.text,
+  //   siblingStuding: sib,
+  //   siblingFullName: _siblingfullnamecontroller.text,
+  //   // Other properties for sibling information
+  // );
 
-    // FamilyInformation familyInformation = FamilyInformation(
-    //     parentalStatus: _parentstatus,
-    //     parentFirstName: _gardianfirstnameontroller.text,
-    //     parentLastName: _gardianlastnameontroller.text,
-    //     parentEmail: _gardianemailcontroller.text,
-    //     parentPhone: int.parse(_gardianphonecontroller.text),
-    //     parentOccupation: _gardianocccupationcontroller.text,
-    //     parentEducationalQualification: _gardianeducationcontroller.text
-    //     // Other properties for family information
-    //     );
+  // FamilyInformation familyInformation = FamilyInformation(
+  //     parentalStatus: _parentstatus,
+  //     parentFirstName: _gardianfirstnameontroller.text,
+  //     parentLastName: _gardianlastnameontroller.text,
+  //     parentEmail: _gardianemailcontroller.text,
+  //     parentPhone: int.parse(_gardianphonecontroller.text),
+  //     parentOccupation: _gardianocccupationcontroller.text,
+  //     parentEducationalQualification: _gardianeducationcontroller.text
+  //     // Other properties for family information
+  //     );
 
 // // Convert the instances to JSON
 //     String studentJson = jsonEncode(studentDetails.toJson());
@@ -925,16 +924,16 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
 //     }
 //   }
 
-void addnewStudent(File? imageFileList, context) async {
-  bool sib = issibling == "Yes";
-  debugPrint(sib.toString());
-  SharedPreferences userdata = await SharedPreferences.getInstance();
+  void addnewStudent(File? imageFileList, context) async {
+    bool sib = issibling == "Yes";
+    debugPrint(sib.toString());
+    SharedPreferences userdata = await SharedPreferences.getInstance();
 
-  final token = userdata.getString("token");
-  final zoneId = userdata.getString("zoneId");
-  final centerId = userdata.getString("centerId");
+    final token = userdata.getString("token");
+    final zoneId = userdata.getString("zoneId");
+    final centerId = userdata.getString("centerId");
 
-      StudentDetails studentDetails = StudentDetails(
+    StudentDetails studentDetails = StudentDetails(
       firstName: _firstnamecontroller.text,
       lastName: _lastnamecontroller.text,
       city: _citycontroller.text,
@@ -946,6 +945,7 @@ void addnewStudent(File? imageFileList, context) async {
       schoolName: _schoolcontroller.text,
       adharNumber: int.parse(_adhaarcontroller.text),
       dateOfBirth: _dobcontroller.text,
+      gender: gender.toString()
 
       // Other properties for student details
     );
@@ -961,23 +961,23 @@ void addnewStudent(File? imageFileList, context) async {
     );
 
     FamilyInformation familyInformation = FamilyInformation(
-        parentalStatus: _parentstatus,
-        parentFirstName: _gardianfirstnameontroller.text,
-        parentLastName: _gardianlastnameontroller.text,
-        parentEmail: _gardianemailcontroller.text,
-        parentPhone: int.parse(_gardianphonecontroller.text),
-        parentOccupation: _gardianocccupationcontroller.text,
-        parentEducationalQualification: _gardianeducationcontroller.text
-        // Other properties for family information
-        );
+      fatherName: _gardianfirstnameontroller.text,
+      motherName: _gardianlastnameontroller.text,
+      email: _gardianemailcontroller.text,
+      phone: int.parse(_gardianphonecontroller.text),
+      parentOccupation: _gardianocccupationcontroller.text,
+      educationalQualification: _gardianeducationcontroller.text,
 
-  // Convert the instances to JSON
-  String studentJson = jsonEncode(studentDetails.toJson());
-  String siblingJson = jsonEncode(siblingInformation.toJson());
-  String familyJson = jsonEncode(familyInformation.toJson());
+      // Other properties for family information
+    );
 
-  // Combine the JSON strings and add them to the request fields
-  String jsonData = '''
+    // Convert the instances to JSON
+    String studentJson = jsonEncode(studentDetails.toJson());
+    String siblingJson = jsonEncode(siblingInformation.toJson());
+    String familyJson = jsonEncode(familyInformation.toJson());
+
+    // Combine the JSON strings and add them to the request fields
+    String jsonData = '''
 {
   "student_details": $studentJson,
   "sibling_information": $siblingJson,
@@ -985,38 +985,36 @@ void addnewStudent(File? imageFileList, context) async {
 }
 ''';
 
-  final url = Uri.parse(ApiEndPoints.baseurl +
-      '/api/zones/' +
-      zoneId! +
-      '/centers/' +
-      centerId! +
-      '/students');
-  try {
-    GlobalMethods().showLoader(context, true);
-    var request = http.MultipartRequest("POST", url);
-    request.files.add(await http.MultipartFile.fromPath("file", imageFileList!.path));
+    final url = Uri.parse(ApiEndPoints.baseurl +
+        '/api/zones/' +
+        zoneId! +
+        '/centers/' +
+        centerId! +
+        '/students');
+    try {
+      GlobalMethods().showLoader(context, true);
+      var request = http.MultipartRequest("POST", url);
+      request.files
+          .add(await http.MultipartFile.fromPath("file", imageFileList!.path));
 
-    request.headers.addAll({
-      "Authorization": "Bearer $token"
-    });
+      request.headers.addAll({"Authorization": "Bearer $token"});
 
-    request.fields.addAll({'student': jsonData});
+      request.fields.addAll({'student': jsonData});
 
-    var streamResponse = await request.send();
+      var streamResponse = await request.send();
 
-    var response = await http.Response.fromStream(streamResponse);
-    print(response.body);
+      var response = await http.Response.fromStream(streamResponse);
+      print(response.body);
 
-    GlobalMethods().showLoader(context, false);
-    debugPrint(response.statusCode.toString());
-    if (response.statusCode == 200) {
-      showToast("Post Uploaded Successfully");
-    } else {
-      showToast("Something Went Wrong");
+      GlobalMethods().showLoader(context, false);
+      debugPrint(response.statusCode.toString());
+      if (response.statusCode == 200) {
+        showToast("Post Uploaded Successfully");
+      } else {
+        showToast("Something Went Wrong");
+      }
+    } catch (e) {
+      debugPrint(e.toString());
     }
-  } catch (e) {
-    debugPrint(e.toString());
   }
-}
-
 }
